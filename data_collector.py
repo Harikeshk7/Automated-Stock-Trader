@@ -1,31 +1,24 @@
-# Data Collection
-import requests
-import pandas as pd
-
-# response = requests.get("https://www.davidinouye.com/course/ece47300-spring-2023/", allow_redirects=True)
-
-# print("Error code = ", response.status_code)      
-# print("Response text = ",response.text)
-# with open("test.html", "wt") as fptr:
-#     fptr.write(response.text)
-
-# data = pd.read_csv('https://github.com/vega/datalib/blob/master/test/data/stocks.csv')
-# print(data)
-
 # Import Statements
 import csv
 import urllib.request as urllib2
 import codecs
+from urllib.parse import urlencode, urljoin, urlparse, quote
+from pandas import *
 
-url = 'http://winterolympicsmedals.com/medals.csv' # csv URL - TEST URL
-response = urllib2.urlopen(url) # Get response from URL
-# print(f"Status Code = {response.status_code}")
+stock_csv = read_csv('Stocks in the SP 500 Index.csv')
 
-cr = csv.reader(codecs.iterdecode(response, 'utf-8')) # Read csv from URL
-fptr = open('test.csv', 'w', newline ='') # File in which response is to be stored
+stock = stock_csv['Symbol'].tolist()
 
-# Storing response in csv file
-for row in cr:
-    writer = csv.writer(fptr, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL) 
-    writer.writerow(row)
+key = '63dbd073810b06.72223265' # Trevor's key
+for i in stock:
+    url = "https://eodhistoricaldata.com/api/intraday/%s.US?api_token=%s&interval=1m" % (i, key) 
+    req = urllib2.Request(url)
+    req.add_header('User-Agent','Mozilla/5.0')
+    response = urllib2.urlopen(req)
 
+    cr = csv.reader(codecs.iterdecode(response, 'utf-8')) 
+    fptr = open('test/%s.csv' % (i), 'w', newline ='') 
+
+    for row in cr:
+        writer = csv.writer(fptr, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL) 
+        writer.writerow(row)
