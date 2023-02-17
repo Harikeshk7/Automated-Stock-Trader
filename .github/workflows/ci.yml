@@ -22,4 +22,4 @@ jobs:
         python -m pip install neat-python
 
     - name: Run script
-      run: python3 refNeatAlg\Stock-Trading-with-Neat\sources\NEAT_network_training.py
+      run: python3 NEAT_network_training.py
