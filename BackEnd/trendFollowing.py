@@ -71,8 +71,9 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
     #print(f'Total profits from {stock_name} : {profit_dollar}, {sum(rel_profit)}')
     # Create json for each stock 
     stockJson = {}
+    OwnedStocksList = []
     if stock_name not in stockJson:
-        stockJson = {f'{stock_name}' : {'total_shares' : f'{total_shares}', 'profit_dollar' : f'{profit_dollar}'}, 'history' : f'{actions}'} 
+        stockJson = {f'{stock_name}' : {'total_shares' : f'{total_shares}', 'profit_dollar' : f'{profit_dollar}'}, 'history' : f'{actions}', 'OwnedStocksList' : f'{OwnedStocksList}'} 
     # print(stockJson)
     return stockJson
 
@@ -87,6 +88,10 @@ def main():
 
     stock_csv = pd.read_csv('Stocks in the SP 500 Index.csv')
     stock = stock_csv['Symbol'].tolist()
+
+    # file = open('../test/XOM.csv')
+    # intraday = pd.read_csv(file)
+    # stockJson = Trend(intraday, 0.02, 0.01, 'XOM')
 
     for j in stock:
         file = open('../test/%s.csv' % (j))
