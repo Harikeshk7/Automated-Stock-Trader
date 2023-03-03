@@ -1,5 +1,8 @@
 # Import Statements
 import os
+import sys
+sys.path.append("../Backend")
+from trendFollowing import *
 # print('Installing Packages')
 # os.system('pip install -r requirements.txt')
 
@@ -17,22 +20,22 @@ and reads the contents of the uploaded file using Flask's request.files object
 
 @app.route("/upload", methods=['POST'])
 def upload_file():
-    uploaded_files = request.files.getlist('dir[]')
-    if len(uploaded_files) == 0:
+    selected_strings = request.form.getlist('strings[]')
+    if len(selected_strings) == 0:
         return {'status': 'failure'}
-    
-    directory_name = os.path.join(os.getcwd(), 'uploaded_files')
-    os.makedirs(directory_name, exist_ok=True)
 
-    for file in uploaded_files:
-        print(f'File name = {file.filename}, directory name = {directory_name}')
-        filename = os.path.basename(file.filename)
-        file.save(os.path.join(directory_name,filename))
+    print(f'Selected Strings: {selected_strings}')
 
     # Call simple algorithm - Read jsons
+
+    # print("Shifting Directories")
+    # os.chdir('../Backend')
+    # print("pwd")
+    # os.system('pwd')     
     
+    # JsonList = main_trendFollowing()
     
-    json_returned = {'status':'success', 'directory name': directory_name}
+    json_returned = {'status':'success'}
 
     # Writing to a stdout file
     # with open('output_file.txt', 'wb') as output_file:
