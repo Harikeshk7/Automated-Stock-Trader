@@ -2,17 +2,25 @@
 // "/upload" endpoint on the backend with the selected CSV file as a FormData object
 
 function uploadFile() {
-  console.log('Typescript hit2')
-  const input = document.getElementById("fileInput") as HTMLInputElement;
-  const file = input.files?.[0];
+  console.log('Typescript hit')
+  const input = document.getElementById("directoryInput") as HTMLInputElement;
+  const directoryInput = document.getElementById("directoryInput");
+  const directoryButton = document.getElementById("directory_button");
+  // const dir = input.files?.[0];
+  const dir = input.files;
 
-  if (!file) {
-    console.error("No file selected.");
+  console.log(dir)
+
+  if (!dir) {
+    console.error("No directory selected.");
     return;
   }
 
   const formData = new FormData();
-  formData.append("file", file);
+  for (let i = 0; i < dir.length; i++) {
+    const file = dir[i]
+    formData.append("dir[]", file);
+  }
   const local_hostUrl = `http://localhost:5000/upload`;
 
   fetch(local_hostUrl, {
@@ -24,7 +32,7 @@ function uploadFile() {
   },
     (reason) => { console.log(reason) })
     .then(json => {
-      console.log('Displaying on webpage')
+      console.log('Displaying on webpage - directory path: ', json.path)
 
       const jsonDataDiv = document.createElement('div');
       jsonDataDiv.innerHTML = JSON.stringify(json);
@@ -36,3 +44,5 @@ function uploadFile() {
       console.error(error);
     });
 }
+
+

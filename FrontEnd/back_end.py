@@ -17,22 +17,32 @@ and reads the contents of the uploaded file using Flask's request.files object
 
 @app.route("/upload", methods=['POST'])
 def upload_file():
-    file = request.files["file"]
-    content = file.read()
-    content = content.decode('utf-8')
-    print(f'Content type = {type(content)}')
+    uploaded_files = request.files.getlist('dir[]')
+    if len(uploaded_files) == 0:
+        return {'status': 'failure'}
+    
+    directory_name = os.path.join(os.getcwd(), 'uploaded_files')
+    os.makedirs(directory_name, exist_ok=True)
 
+    for file in uploaded_files:
+        print(f'File name = {file.filename}, directory name = {directory_name}')
+        filename = os.path.basename(file.filename)
+        file.save(os.path.join(directory_name,filename))
+
+    # print(dir)
+
+    
     # Call simple algorithm - Harry and Trevor
     
     
-    json_returned = {'status':'success','content':content}
+    json_returned = {'status':'success', 'directory name': directory_name}
 
     # Writing to a stdout file
-    with open('output_file.txt', 'wb') as output_file:
-        # Write the contents of the input file to the new file
-        output_file.write(content.encode('utf-8'))
+    # with open('output_file.txt', 'wb') as output_file:
+    #     # Write the contents of the input file to the new file
+    #     output_file.write(content.encode('utf-8'))
     
-    print("Flushed output to 'output_file.txt' file")
+    # print("Flushed output to 'output_file.txt' file")
     return json_returned
 
 # @app.route("/results")
