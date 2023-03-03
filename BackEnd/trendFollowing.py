@@ -86,7 +86,7 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
     #print(stockJson)
     return stockJson
 
-def main(stockList):
+def main_trendFollowing(stockList):
     JsonList = []
 
     with open('jsonLogFile.txt', 'w') as json_log:
@@ -106,8 +106,8 @@ def main(stockList):
     
     return JsonList
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main_trendFollowing()
 
         
 
