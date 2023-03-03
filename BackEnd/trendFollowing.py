@@ -73,9 +73,11 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
     stockJson = {}
     if stock_name not in stockJson:
         stockJson = {f'{stock_name}' : {'total_shares' : f'{total_shares}', 'profit_dollar' : f'{profit_dollar}'}, 'history' : f'{actions}'} 
-    print(stockJson)
+    # print(stockJson)
+    return stockJson
 
 def main():
+    JsonList = []
     # double for loop over 120 days of 500 companies
     file = open('../test/XOM.csv')
     intraday = pd.read_csv(file)
@@ -89,7 +91,10 @@ def main():
     for j in stock:
         file = open('../test/%s.csv' % (j))
         intraday = pd.read_csv(file)
-        Trend(intraday, 0.02, 0.01, j)
+        stockJson = Trend(intraday, 0.02, 0.01, j)
+        JsonList.append(stockJson)
+    
+    return JsonList
 
 if __name__ == "__main__":
     main()

@@ -29,10 +29,7 @@ def upload_file():
         filename = os.path.basename(file.filename)
         file.save(os.path.join(directory_name,filename))
 
-    # print(dir)
-
-    
-    # Call simple algorithm - Harry and Trevor
+    # Call simple algorithm - Read jsons
     
     
     json_returned = {'status':'success', 'directory name': directory_name}
