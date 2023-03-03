@@ -5,13 +5,16 @@
   </head>
   <body>
     <h1>Upload a CSV File</h1>
-    <input type="file" id="directoryInput" webkitdirectory directory multiple>
-    <!-- <input type="file" id="directoryInput" webkitdirectory> -->
-    <button id="directory_button" onclick="uploadFile()">Upload</button>
+    <select id="stock_input" multiple>
+        <option value="AMZN">AMZN</option>
+        <option value="MSFT">MSFT</option>
+        <option value="TSLA">TSLA</option>
+    </select>
+    <button id="upload_button" onclick="uploadStrings()">Upload</button>
     <script src="index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/file-selector@0.2.3/dist/file-selector.min.js"></script>
   </body>
 </html>
+
 
 <!-- When a user selects a CSV file and clicks the Upload button, the frontend will send a POST request to the backend with the file contents. 
     The backend will receive the request, read the file contents, and process the CSV file. -->
