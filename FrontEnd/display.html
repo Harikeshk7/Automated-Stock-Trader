@@ -1,20 +1,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Upload CSV File</title>
+    <title>Automated Stock Trading Bot</title>
   </head>
   <body>
-    <h1>Choose Stocks to Trade</h1>
-    <select id="stock_input" multiple>
+    <h1><center>Automated Stock Trading Bot</center></h1>
+    <h2><div id="balance"></div></h2>
+    <h4>Choose Stocks to Trade</h4>
+      <select id="stock_input" multiple>
         <option value="AMZN">AMZN</option>
         <option value="MSFT">MSFT</option>
         <option value="GOOG">GOOG</option>
-    </select>
-    <button id="upload_button" onclick="uploadStrings()">Upload</button>
-    <script src="index.js"></script>
+      </select>
+      <button id="upload_button" onclick="runBot()">Upload</button>
+      <script src="homePage.js"></script>
   </body>
 </html>
-
-
-<!-- When a user selects a CSV file and clicks the Upload button, the frontend will send a POST request to the backend with the file contents. 
-    The backend will receive the request, read the file contents, and process the CSV file. -->
