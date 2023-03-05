@@ -64,26 +64,14 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
             rel_profit.append(0) # None
         line_offset = end_offset[i] + 1
     
-    # Create json for each stock 
-    stockJson = {}
-    OwnedStockList = []
+    # Update Total Capital
     global total_capital
     total_capital += profit_dollar
-    if stock_name not in stockJson:
-        #stockJson = {f'{stock_name}' : {'total_shares' : f'{total_shares}', 'profit_dollar' : f'{profit_dollar}'}, 'history' : f'{actions}', 'OwnedStocksList' : f'{OwnedStocksList}'} 
-        stockJson = {
-                    "total_capital" : total_capital, 
-                    "OwnedStockList" : OwnedStockList,
-                    "history" : {stock_name : {"actions" : actions}}
-                    }
-                    
-        
 
     #print(f'Total profits from {stock_name} : {profit_dollar}, {sum(rel_profit)}, {total_capital}')
-    return stockJson
+    return actions
 
-def main_trendFollowing():
-    JsonList = []
+def main_trendFollowing(stockList):
 
     with open('jsonLogFile.txt', 'w') as json_log:
         json_log.write('')
@@ -94,13 +82,19 @@ def main_trendFollowing():
     # file = open('../test/XOM.csv')
     # intraday = pd.read_csv(file)
     # stockJson = Trend(intraday, 0.02, 0.01, 'XOM')
+    history = {}
+    OwnedStockList = []
     for j in stockList:
         file = open('../test/%s.csv' % (j))
         intraday = pd.read_csv(file)
-        stockJson = Trend(intraday, 0.02, 0.01, j)
-        JsonList.append(stockJson)
-    
-    return JsonList
+        actions = Trend(intraday, 0.02, 0.01, j)
+        history[j] = actions
+    stockJson = {
+                "total_capital" : total_capital, 
+                "OwnedStockList" : OwnedStockList,
+                "history" : history
+            }
+    return stockJson
 
 # if __name__ == "__main__":
 #     main()
