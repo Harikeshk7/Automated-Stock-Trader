@@ -14,3 +14,15 @@ th, td
     border: 1px solid #000;
     text-align: center;
 }
+
+tr:hover {background-color: lightblue;}
+
+hiddenDiv
+{
+    display: none;
+}
+
+popup
+{
+    display: none;
+}
