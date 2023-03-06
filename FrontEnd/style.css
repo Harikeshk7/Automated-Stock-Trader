@@ -1,0 +1,16 @@
+body
+{
+    line-height: 40px; 
+}
+
+table
+{
+    width: 75%;
+    border-collapse: collapse;
+}
+
+th, td
+{
+    border: 1px solid #000;
+    text-align: center;
+}
