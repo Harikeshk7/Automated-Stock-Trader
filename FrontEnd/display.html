@@ -8,14 +8,15 @@
     <h1><center>Automated Stock Trading Bot</center></h1>
     <h2><div id="balance"></div></h2>
     <h4>Choose Stocks to Trade</h4>
-      <select id="stock_input" multiple>
+      <select id="stockInput" multiple>
         <option value="AMZN">AMZN</option>
         <option value="MSFT">MSFT</option>
         <option value="GOOG">GOOG</option>
       </select>
-      <button id="upload_button" onclick="runBot()">Select</button>
+      <button id="selectButton" onclick="runBot()">Select</button>
       <div id="ownedTable">
         <table>
+          <caption>Currently Owned Stocks</caption>
           <tr>
             <th>Stock</th>
             <th>Shares</th>
@@ -28,6 +29,11 @@
           </tr>
         </table>
       </div>
+      <hiddenDiv id="completeLog">
+        <text>Complete!</text>
+        <button id="logButton" onclick="displayLog()">Display Log</button>
+        <popup id="logPopup"></popup>
+      </hiddenDiv>
       <script src="homePage.js"></script>
   </body>
 </html>

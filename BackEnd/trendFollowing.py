@@ -56,8 +56,8 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
             #json_log.write(f'{stock_name} : Bought {numShares} at {buyprice} at {buytime}, Sold {numShares} at {exitprice} at {exittime}')
             with open('jsonLogFile.txt', 'a') as json_log:
                 json_log.write(f'{stock_name} : Bought {numShares} shares at ${buyprice} at {buytime}, Sold {numShares} shares at ${exitprice} at {exittime}\n')
-            actions.append(['Buy', buyprice, numShares, buytime])
-            actions.append(['Sell', exitprice, numShares, exittime])
+            actions.append({"type":'Bought', "price":buyprice, "shares":numShares, "time":buytime, "stock":stock_name})
+            actions.append({"type":'Sold', "price":exitprice, "shares":numShares, "time":exittime, "stock":stock_name})
 
 
         else:
@@ -82,13 +82,13 @@ def main_trendFollowing(stockList):
     # file = open('../test/XOM.csv')
     # intraday = pd.read_csv(file)
     # stockJson = Trend(intraday, 0.02, 0.01, 'XOM')
-    history = {}
+    history = []
     OwnedStockList = []
     for j in stockList:
         file = open('../test/%s.csv' % (j))
         intraday = pd.read_csv(file)
         actions = Trend(intraday, 0.02, 0.01, j)
-        history[j] = actions
+        history += actions
     stockJson = {
                 "total_capital" : total_capital, 
                 "OwnedStockList" : OwnedStockList,
