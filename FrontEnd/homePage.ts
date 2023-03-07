@@ -33,7 +33,7 @@ function convertTimeString(time: any): string
 
 function initializeBalance()
 {
-    let balance = 25000
+    let balance = 1000
     const app = document.getElementById("balance")!
     const p = document.createElement("p")
     p.innerHTML = "Balance: $"+balance
