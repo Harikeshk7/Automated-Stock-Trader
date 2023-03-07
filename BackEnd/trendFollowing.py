@@ -4,7 +4,7 @@ import datetime as dt
 import os
 #DAYS = 93
 TWOHRS = 120
-total_capital = 25000
+total_capital = 1000
 
 def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P500 stocks, 
     line_offset = 0

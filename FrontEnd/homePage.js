@@ -15,7 +15,7 @@ function convertTimeString(time) {
     return (match[2] + "/" + match[3] + "/" + match[1] + " " + match[4]);
 }
 function initializeBalance() {
-    var balance = 25000;
+    var balance = 1000;
     var app = document.getElementById("balance");
     var p = document.createElement("p");
     p.innerHTML = "Balance: $" + balance;
