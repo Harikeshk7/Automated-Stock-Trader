@@ -18,4 +18,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.TOKEN_GITHUB }}  # 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
-        publish_dir: ./Automated-Stock-Trader # or any other directory containing your builtapp
+        publish_dir: ./Automated-Stock-Trader # or any other directory containing your buil tapp
