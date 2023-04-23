@@ -4,7 +4,7 @@ name: Deploy to Github Pages
 on:
   push:
     branches:
-      - Eshaan # or any other branch you want to deploy from
+      - main # or any other branch you want to deploy from
 
 jobs:
   deploy:
@@ -12,9 +12,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+     
       
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.TOKEN_GITHUB }} 
-        publish_dir: ./Automated-Stock-Trader # or any other directory containing your buil tap
+        github_token: ${{ secrets.TOKEN_GITHUB }}  # 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
+        publish_dir: ./Automated-Stock-Trader # or any other directory containing your buil tapp
