@@ -2,9 +2,10 @@ import csv
 import pandas as pd
 import datetime as dt
 import os
-#DAYS = 93
+import subprocess
 TWOHRS = 120
-total_capital = 1000
+total_capital = 10000
+MAX_LINE = 73924
 
 def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P500 stocks, 
     line_offset = 0
@@ -53,7 +54,6 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
             rel_profit.append((exitprice - buyprice)/buyprice) # Instead of storing percentage, let's append 500$
             
             # Create Json here of buy/sell action for a single day 
-            #json_log.write(f'{stock_name} : Bought {numShares} at {buyprice} at {buytime}, Sold {numShares} at {exitprice} at {exittime}')
             with open('jsonLogFile.txt', 'a') as json_log:
                 json_log.write(f'{stock_name} : Bought {numShares} shares at ${buyprice} at {buytime}, Sold {numShares} shares at ${exitprice} at {exittime}\n')
             actions.append({"type":'Bought', "price":buyprice, "shares":numShares, "time":buytime, "stock":stock_name})
@@ -68,33 +68,82 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
     global total_capital
     total_capital += profit_dollar
 
-    #print(f'Total profits from {stock_name} : {profit_dollar}, {sum(rel_profit)}, {total_capital}')
     return actions
+
+def find_max():
+
+    line_num = 0
+    stock_csv = pd.read_csv('SP_500_Index.csv')
+    stockList = stock_csv['Symbol'].tolist()
+    for stock in stockList:
+        file = open('../test/%s.csv' % (stock))
+        num_lines = len(file.readlines())
+        line_num = max(num_lines, line_num)    
+
+    return line_num
+
+def macd_action(intraday, i, numShares):
+    profitDollar = 0
+    global total_capital
+    first_val = intraday.iloc[i].macd_h
+    second_val = intraday.iloc[i+1].macd_h
+    if ((first_val < 0) and (second_val > 0)):
+        #buy
+        capital_spent = (second_val - first_val) * 100 + 100
+        numShares = capital_spent/intraday.iloc[i+1].Open
+        total_capital -= capital_spent
+    elif((intraday.iloc[i].macd_h > 0) and (intraday.iloc[i+1].macd_h < 0)):
+        #sell
+        profitDollar += ((numShares) * intraday.iloc[i+1].Open) # 
+        total_capital += profitDollar
+        profitDollar = 0
+        numShares = 0
+    return numShares
 
 def main_trendFollowing(stockList):
 
     with open('jsonLogFile.txt', 'w') as json_log:
         json_log.write('')
 
-    # stock_csv = pd.read_csv('SP_500_Index.csv')
-    # stockList = stock_csv['Symbol'].tolist()
+    stock_csv = pd.read_csv('SP_500_Index.csv')
+    #stockList = stock_csv['Symbol'].tolist()
+    stock_list = ['AAPL', 'MSFT', 'TSLA', 'XOM']
 
-    # file = open('../test/XOM.csv')
-    # intraday = pd.read_csv(file)
-    # stockJson = Trend(intraday, 0.02, 0.01, 'XOM')
-    history = []
     OwnedStockList = []
-    for j in stockList:
-        file = open('../test/%s.csv' % (j))
-        intraday = pd.read_csv(file)
-        actions = Trend(intraday, 0.02, 0.01, j)
-        history += actions
-    stockJson = {
-                "total_capital" : total_capital, 
-                "OwnedStockList" : OwnedStockList,
-                "history" : history
-            }
-    return stockJson
+    #max_line = find_max()
+    history = []
+    stock_shares = {}
+    numShares = 0
+
+    for i in range(35,MAX_LINE):
+        history = []
+        for j in stock_list:
+            file = open('../test_copy/%s.csv' % (j))
+            intraday = pd.read_csv(file)
+            if (j not in stock_shares):
+                numShares = 0
+                stock_shares[j] = 0
+            else:
+                numShares = stock_shares[j]
+            numShares = macd_action(intraday, i, numShares)
+            stock_shares[j] = numShares
+            # Do buy/sell action based on macd_h
+            if (i + 1 > len(intraday.index)):
+                stock_list.remove(j)
+            print(f'stock name: {j}, line num: {i}, total capital: {total_capital}')
+
+
+    #     for j in stockList: # add a data structure to keep track of line numbers of each csv file
+    #         file = open('../test/%s.csv' % (j))
+    #         intraday = pd.read_csv(file)
+    #         actions = Trend(intraday, 0.02, 0.01, j)
+    #         history += actions
+    #     stockJson = {
+    #                 "total_capital" : total_capital, 
+    #                 "OwnedStockList" : OwnedStockList,
+    #                 "history" : history
+    #             }
+    # return stockJson
 
 # if __name__ == "__main__":
 #     main()
