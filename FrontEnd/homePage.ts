@@ -99,7 +99,7 @@ function runBot() {
       const string = selectedStrings[i]
       formData.append("strings[]", string)
     }
-    const local_hostUrl = `http://localhost:5000/upload`;
+    const local_hostUrl = `/upload`;
   
     fetch(local_hostUrl, {
       method: "POST",
@@ -118,6 +118,7 @@ function runBot() {
 
       })
       .catch(error => {
+        console.log('ERROR')
         console.error(error)
       })
   }
