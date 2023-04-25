@@ -82,7 +82,7 @@ def find_max():
 
     return line_num
 
-def macd_action(intraday, i, numShares):
+def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
     profitDollar = 0
     global total_capital
     first_val = intraday.iloc[i].macd_h
@@ -92,13 +92,20 @@ def macd_action(intraday, i, numShares):
         capital_spent = (second_val - first_val) * 100 + 100
         numShares = capital_spent/intraday.iloc[i+1].Open
         total_capital -= capital_spent
+        if stock_name not in OwnedStockList:
+            OwnedStockList.append(stock_name)
+        actions.append({"type":'Bought', "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name, "OwnedStockList":OwnedStockList})
     elif((intraday.iloc[i].macd_h > 0) and (intraday.iloc[i+1].macd_h < 0)):
         #sell
         profitDollar += ((numShares) * intraday.iloc[i+1].Open) # 
         total_capital += profitDollar
         profitDollar = 0
         numShares = 0
-    return numShares
+        if stock_name in OwnedStockList:
+            OwnedStockList.remove(stock_name)
+        actions.append({"type":'Sold', "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name, "OwnedStockList":OwnedStockList})
+
+    return numShares, actions, OwnedStockList
 
 def main_trendFollowing(stockList):
 
@@ -106,18 +113,17 @@ def main_trendFollowing(stockList):
         json_log.write('')
 
     stock_csv = pd.read_csv('SP_500_Index.csv')
-    #stockList = stock_csv['Symbol'].tolist()
-    stock_list = ['AAPL', 'MSFT', 'TSLA', 'XOM']
+    #stockList = ['AAPL', 'MSFT', 'TSLA', 'XOM'] # Delete this and use the main function input instead
 
     OwnedStockList = []
-    #max_line = find_max()
     history = []
     stock_shares = {}
     numShares = 0
+    actions = []
 
     for i in range(35,MAX_LINE):
         history = []
-        for j in stock_list:
+        for j in stockList:
             file = open('../test_copy/%s.csv' % (j))
             intraday = pd.read_csv(file)
             if (j not in stock_shares):
@@ -125,25 +131,15 @@ def main_trendFollowing(stockList):
                 stock_shares[j] = 0
             else:
                 numShares = stock_shares[j]
-            numShares = macd_action(intraday, i, numShares)
+            # if statement to choose macd_action() or trendFollowing()
+            numShares, actions, OwnedStockList = macd_action(intraday, i, numShares, j, actions, OwnedStockList)
             stock_shares[j] = numShares
             # Do buy/sell action based on macd_h
             if (i + 1 > len(intraday.index)):
                 stock_list.remove(j)
-            print(f'stock name: {j}, line num: {i}, total capital: {total_capital}')
+            
+            yield json.dumps(result_dict)
 
-
-    #     for j in stockList: # add a data structure to keep track of line numbers of each csv file
-    #         file = open('../test/%s.csv' % (j))
-    #         intraday = pd.read_csv(file)
-    #         actions = Trend(intraday, 0.02, 0.01, j)
-    #         history += actions
-    #     stockJson = {
-    #                 "total_capital" : total_capital, 
-    #                 "OwnedStockList" : OwnedStockList,
-    #                 "history" : history
-    #             }
-    # return stockJson
 
 # if __name__ == "__main__":
 #     main()

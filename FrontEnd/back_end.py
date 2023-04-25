@@ -2,7 +2,6 @@
 import os
 import sys
 import time
-sys.path.append("../Backend")
 from trendFollowing import *
 # print('Installing Packages')
 # os.system('pip install -r requirements.txt')
@@ -28,13 +27,16 @@ def upload_file():
     print(f'Selected Strings: {selected_strings}')
 
     # Call simple algorithm - Read jsons
-    start_time = time.time()
+    # start_time = time.time()
 
-    print("Shifting Directories")
-    os.chdir('../Backend')
-    JsonList = main_trendFollowing(selected_strings)
+    #print("Shifting Directories")
+    # os.chdir('../Backend')
+    for result in main_trendFollowing(selected_strings):
+        JsonList.append(json.loads(result))
+        yield f"data:{result}\n\n"
+
     json_returned = {'status':'success', 'JsonList': JsonList}
-    os.chdir('../FrontEnd')
+    # os.chdir('../FrontEnd')
     # Writing to a stdout file
     # with open('output_file.txt', 'wb') as output_file:
     #     # Write the contents of the input file to the new file
