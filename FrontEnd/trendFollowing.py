@@ -3,6 +3,7 @@ import pandas as pd
 import datetime as dt
 import os
 import subprocess
+import json
 TWOHRS = 120
 total_capital = 10000
 MAX_LINE = 73924
@@ -56,8 +57,8 @@ def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P50
             # Create Json here of buy/sell action for a single day 
             with open('jsonLogFile.txt', 'a') as json_log:
                 json_log.write(f'{stock_name} : Bought {numShares} shares at ${buyprice} at {buytime}, Sold {numShares} shares at ${exitprice} at {exittime}\n')
-            actions.append({"type":'Bought', "price":buyprice, "shares":numShares, "time":buytime, "stock":stock_name})
-            actions.append({"type":'Sold', "price":exitprice, "shares":numShares, "time":exittime, "stock":stock_name})
+            actions.append({"type":"Bought", "price":buyprice, "shares":numShares, "time":buytime, "stock":stock_name})
+            actions.append({"type":"Sold", "price":exitprice, "shares":numShares, "time":exittime, "stock":stock_name})
 
 
         else:
@@ -94,7 +95,7 @@ def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
         total_capital -= capital_spent
         if stock_name not in OwnedStockList:
             OwnedStockList.append(stock_name)
-        actions.append({"type":'Bought', "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name, "OwnedStockList":OwnedStockList})
+        actions.append({"type":"Bought", "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name})
     elif((intraday.iloc[i].macd_h > 0) and (intraday.iloc[i+1].macd_h < 0)):
         #sell
         profitDollar += ((numShares) * intraday.iloc[i+1].Open) # 
@@ -103,11 +104,11 @@ def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
         numShares = 0
         if stock_name in OwnedStockList:
             OwnedStockList.remove(stock_name)
-        actions.append({"type":'Sold', "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name, "OwnedStockList":OwnedStockList})
+        actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name})
 
     return numShares, actions, OwnedStockList
 
-def main_trendFollowing(stockList):
+def runAlgorithm(stockList):
 
     with open('jsonLogFile.txt', 'w') as json_log:
         json_log.write('')
@@ -120,7 +121,6 @@ def main_trendFollowing(stockList):
     stock_shares = {}
     numShares = 0
     actions = []
-
     for i in range(35,MAX_LINE):
         history = []
         for j in stockList:
@@ -136,9 +136,17 @@ def main_trendFollowing(stockList):
             stock_shares[j] = numShares
             # Do buy/sell action based on macd_h
             if (i + 1 > len(intraday.index)):
-                stock_list.remove(j)
-            
-            yield json.dumps(result_dict)
+                stockList.remove(j)
+            history += actions
+            stockJson = {
+                "total_capital" : total_capital, 
+                "OwnedStockList" : OwnedStockList,
+                "history" : history
+                         }
+            #print("result" + stockJson)
+            #print("dumps" + json.dumps(stockJson))
+            #print(json.dumps(stockJson))
+            yield json.dumps(stockJson)
 
 
 # if __name__ == "__main__":
