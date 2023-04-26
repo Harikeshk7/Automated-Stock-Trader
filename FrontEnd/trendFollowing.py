@@ -101,10 +101,10 @@ def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
         profitDollar += ((numShares) * intraday.iloc[i+1].Open) # 
         total_capital += profitDollar
         profitDollar = 0
-        numShares = 0
         if stock_name in OwnedStockList:
             OwnedStockList.remove(stock_name)
         actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name})
+        numShares = 0
 
     return numShares, actions, OwnedStockList
 
@@ -121,7 +121,7 @@ def runAlgorithm(stockList):
     stock_shares = {}
     numShares = 0
     actions = []
-    for i in range(35,MAX_LINE):
+    for i in range(35,40):
         history = []
         for j in stockList:
             file = open('../test_copy/%s.csv' % (j))
@@ -138,7 +138,7 @@ def runAlgorithm(stockList):
             if (i + 1 > len(intraday.index)):
                 stockList.remove(j)
             history += actions
-            stockJson = {
+    stockJson = {
                 "total_capital" : total_capital, 
                 "OwnedStockList" : OwnedStockList,
                 "history" : history
@@ -146,7 +146,7 @@ def runAlgorithm(stockList):
             #print("result" + stockJson)
             #print("dumps" + json.dumps(stockJson))
             #print(json.dumps(stockJson))
-            yield json.dumps(stockJson)
+    return stockJson
 
 
 # if __name__ == "__main__":

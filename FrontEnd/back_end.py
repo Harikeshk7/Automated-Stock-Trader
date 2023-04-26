@@ -18,6 +18,31 @@ This function handles the POST request to the /upload endpoint
 and reads the contents of the uploaded file using Flask's request.files object
 '''
 
+@app.route("/upload", methods=['POST'])
+def upload_file():
+    selected_strings = request.form.getlist('strings[]')
+    if len(selected_strings) == 0:
+        return {'status': 'failure'}
+
+    print(f'Selected Strings: {selected_strings}')
+
+    # Call simple algorithm - Read jsons
+    start_time = time.time()
+
+    #print("Shifting Directories")
+    #os.chdir('../Backend')
+    JsonList = runAlgorithm(selected_strings)
+    json_returned = {'status':'success', 'JsonList': JsonList}
+    #os.chdir('../FrontEnd')
+    # Writing to a stdout file
+    # with open('output_file.txt', 'wb') as output_file:
+    #     # Write the contents of the input file to the new file
+    #     output_file.write(content.encode('utf-8'))
+
+    # print("Flushed output to 'output_file.txt' file")
+    return json_returned
+
+
 '''@app.route("/upload", methods=['POST'])
 def upload_file():
     selected_strings = request.form.getlist('strings[]')
@@ -29,11 +54,11 @@ def upload_file():
     JsonList = []
 
     for json_obj in runAlgorithm(selected_strings):
-        JsonList = [json_obj]
+        JsonList = [json.dumps(json_obj)]
         print(JsonList)
-        yield json.dumps(JsonList)
-    #json_returned = {'status':'success', 'JsonList': JsonList}
-    #return json_returned'''
+        #yield json.dumps(JsonList)
+    json_returned = {'status':'success', 'JsonList': JsonList}
+    return json_returned'''
 
 '''@app.route("/upload", methods=['POST'])
 def upload_file():
@@ -73,16 +98,19 @@ def upload_file():
     json_returned = {'status':'success', 'JsonList': JsonList}
     return json.dumps(json_returned)'''
 
-@app.route("/upload", methods=['POST'])
+'''@app.route("/upload", methods=['POST'])
 def upload_file():
     selected_strings = request.form.getlist('strings[]')
     if len(selected_strings) == 0:
-        return {'status': 'failure'} 
-    return generate_json(selected_strings)
-def generate_json(selected_strings):
-    for json_obj in runAlgorithm(selected_strings):
-        print(json_obj)  
-        yield json_obj
+        return {'status': 'failure'}
+    def generate_response():
+        for stockJson in runAlgorithm(selected_strings):
+            print(stockJson)
+            yield stockJson
+            time.sleep(5)
+    
+    return Response(generate_response(), mimetype='application/json')'''
+
 
 if __name__ == "__main__":
     with open("config.json") as f:

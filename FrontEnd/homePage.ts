@@ -82,7 +82,7 @@ function displayLog()
   }
 }
 
-/*function runBot() {
+function runBot() {
     console.log('Typescript hit')
     const input = document.getElementById("stockInput") as HTMLSelectElement
     console.log('Input')
@@ -120,7 +120,7 @@ function displayLog()
       .catch(error => {
         console.error(error)
       })
-  }*/
+  }
 
   /*function runBot() {
     const input = document.getElementById("stockInput") as HTMLSelectElement;
@@ -208,7 +208,7 @@ function displayLog()
       })
   }*/
 
-  function runBot() {
+  /*function runBot() {
     console.log('Typescript hit')
     const input = document.getElementById("stockInput") as HTMLSelectElement
     console.log('Input')
@@ -238,16 +238,18 @@ function displayLog()
       })
       .then((response) => {return response.json()}, (reason) => { console.log(reason) })
       .then(json => {
-          console.log('Displaying on webpage - directory path: ', json.path)
-  
-          balanceArea.innerHTML = "Balance: $"+(json.JsonList.total_capital).toFixed(2)
-  
-          completeLog.style.display = "inline"
-          writeLog(json.JsonList.history)
-  
-        })
+        console.log('Displaying on webpage - directory path: ', json.path);
+      
+        const { total_capital, history } = json.JsonList;
+      
+        balanceArea.innerHTML = "Balance: $" + total_capital.toFixed(2);
+      
+        completeLog.style.display = "inline";
+        writeLog(history);
+      })
+      
         .catch(error => {
           console.error(error)
         })
     }, 5000);
-  }
+  }*/

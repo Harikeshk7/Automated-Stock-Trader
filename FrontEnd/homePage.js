@@ -55,45 +55,38 @@ function displayLog() {
         popupButton.innerHTML = "Display Log";
     }
 }
-/*function runBot() {
-    console.log('Typescript hit')
-    const input = document.getElementById("stockInput") as HTMLSelectElement
-    console.log('Input')
-    const selectedStrings = Array.from(input.selectedOptions, option => option.value)
-    console.log(selectedStrings)
-  
+function runBot() {
+    console.log('Typescript hit');
+    var input = document.getElementById("stockInput");
+    console.log('Input');
+    var selectedStrings = Array.from(input.selectedOptions, function (option) { return option.value; });
+    console.log(selectedStrings);
     if (selectedStrings.length === 0) {
-      console.error("No strings selected.")
-      return;
+        console.error("No strings selected.");
+        return;
     }
-  
-    const formData = new FormData();
-    for (let i = 0; i < selectedStrings.length; i++) {
-      const string = selectedStrings[i]
-      formData.append("strings[]", string)
+    var formData = new FormData();
+    for (var i = 0; i < selectedStrings.length; i++) {
+        var string = selectedStrings[i];
+        formData.append("strings[]", string);
     }
-    const local_hostUrl = `http://localhost:5000/upload`;
-  
+    var local_hostUrl = "http://localhost:5000/upload";
     fetch(local_hostUrl, {
-      method: "POST",
-      body: formData,
+        method: "POST",
+        body: formData
     })
-    .then((response) => {return response.json()}, (reason) => { console.log(reason) })
-    .then(json => {
-        console.log('Displaying on webpage - directory path: ', json.path)
-
-        const balanceArea = document.getElementById("balance")!
-        balanceArea.innerHTML = "Balance: $"+(json.JsonList.total_capital).toFixed(2)
-
-        const completeLog = document.getElementById("completeLog")!
-        completeLog.style.display = "inline"
-        writeLog(json.JsonList.history)
-
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }*/
+        .then(function (response) { return response.json(); }, function (reason) { console.log(reason); })
+        .then(function (json) {
+        console.log('Displaying on webpage - directory path: ', json.path);
+        var balanceArea = document.getElementById("balance");
+        balanceArea.innerHTML = "Balance: $" + (json.JsonList.total_capital).toFixed(2);
+        var completeLog = document.getElementById("completeLog");
+        completeLog.style.display = "inline";
+        writeLog(json.JsonList.history);
+    })["catch"](function (error) {
+        console.error(error);
+    });
+}
 /*function runBot() {
   const input = document.getElementById("stockInput") as HTMLSelectElement;
   const selectedStrings = Array.from(input.selectedOptions, (option) => option.value);
@@ -178,38 +171,48 @@ function displayLog() {
       console.error(error)
     })
 }*/
-function runBot() {
-    console.log('Typescript hit');
-    var input = document.getElementById("stockInput");
-    console.log('Input');
-    var selectedStrings = Array.from(input.selectedOptions, function (option) { return option.value; });
-    console.log(selectedStrings);
-    if (selectedStrings.length === 0) {
-        console.error("No strings selected.");
-        return;
-    }
-    var formData = new FormData();
-    for (var i = 0; i < selectedStrings.length; i++) {
-        var string = selectedStrings[i];
-        formData.append("strings[]", string);
-    }
-    var local_hostUrl = 'http://localhost:5000/upload';
-    var balanceArea = document.getElementById("balance");
-    var completeLog = document.getElementById("completeLog");
-    // Fetch data every 5 seconds
-    setInterval(function () {
-        fetch(local_hostUrl, {
-            method: "POST",
-            body: formData
-        })
-            .then(function (response) { return response.json(); }, function (reason) { console.log(reason); })
-            .then(function (json) {
-            console.log('Displaying on webpage - directory path: ', json.path);
-            balanceArea.innerHTML = "Balance: $" + (json.JsonList.total_capital).toFixed(2);
-            completeLog.style.display = "inline";
-            writeLog(json.JsonList.history);
-        })["catch"](function (error) {
-            console.error(error);
-        });
-    }, 5000);
-}
+/*function runBot() {
+  console.log('Typescript hit')
+  const input = document.getElementById("stockInput") as HTMLSelectElement
+  console.log('Input')
+  const selectedStrings = Array.from(input.selectedOptions, option => option.value)
+  console.log(selectedStrings)
+
+  if (selectedStrings.length === 0) {
+    console.error("No strings selected.")
+    return;
+  }
+
+  const formData = new FormData();
+  for (let i = 0; i < selectedStrings.length; i++) {
+    const string = selectedStrings[i]
+    formData.append("strings[]", string)
+  }
+  const local_hostUrl = 'http://localhost:5000/upload';
+
+  const balanceArea = document.getElementById("balance")!;
+  const completeLog = document.getElementById("completeLog")!;
+
+  // Fetch data every 5 seconds
+  setInterval(() => {
+    fetch(local_hostUrl, {
+      method: "POST",
+      body: formData,
+    })
+    .then((response) => {return response.json()}, (reason) => { console.log(reason) })
+    .then(json => {
+      console.log('Displaying on webpage - directory path: ', json.path);
+    
+      const { total_capital, history } = json.JsonList;
+    
+      balanceArea.innerHTML = "Balance: $" + total_capital.toFixed(2);
+    
+      completeLog.style.display = "inline";
+      writeLog(history);
+    })
+    
+      .catch(error => {
+        console.error(error)
+      })
+  }, 5000);
+}*/ 
