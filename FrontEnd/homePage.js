@@ -1,4 +1,5 @@
 document.body.onload = initializeBalance;
+document.body.onload = initializeGraph;
 function compareTime(a, b) {
     if (a.time < b.time) {
         return -1;
@@ -55,11 +56,13 @@ function displayLog() {
         popupButton.innerHTML = "Display Log";
     }
 }
+function initializeGraph() {
+}
 function createPriceArray(history) {
     var currentPrice = 10000;
     var boughtPrice = 0;
     var soldPrice = 0;
-    var prices = [{ x: 'temp', y: 10000 }];
+    var prices = [{ x: '2022-10-06 09:30', y: 10000 }];
     for (var i = 0; i < history.length; i++) {
         if (history[i].type == "Bought") {
             boughtPrice = history[i].shares * history[i].price;
@@ -67,7 +70,7 @@ function createPriceArray(history) {
         if (history[i].type == "Sold") {
             soldPrice = history[i].shares * history[i].price;
             currentPrice += soldPrice - boughtPrice;
-            prices.push({ x: 'temp', y: currentPrice });
+            prices.push({ x: history[i].time, y: currentPrice });
         }
     }
 }
@@ -86,7 +89,7 @@ function runBot() {
         var string = selectedStrings[i];
         formData.append("strings[]", string);
     }
-    var local_hostUrl = "http://localhost:5000/upload"; // http://localhost:5000
+    var local_hostUrl = "/upload"; // http://localhost:5000
     fetch(local_hostUrl, {
         method: "POST",
         body: formData
