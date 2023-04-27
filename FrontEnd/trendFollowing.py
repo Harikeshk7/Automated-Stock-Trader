@@ -118,7 +118,7 @@ def main_trendFollowing(stockList):
     for i in range(35,MAX_LINE):
         history = []
         for j in stock_list:
-            file = open('../test_copy/%s.csv' % (j))
+            file = open(f'test_copy/{j}.csv')
             intraday = pd.read_csv(file)
             if (j not in stock_shares):
                 numShares = 0

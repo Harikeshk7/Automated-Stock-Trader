@@ -99,7 +99,7 @@ function runBot() {
       const string = selectedStrings[i]
       formData.append("strings[]", string)
     }
-    const local_hostUrl = `http://localhost:5000/upload`;
+    const local_hostUrl = `/upload`; // http://localhost:5000
   
     fetch(local_hostUrl, {
       method: "POST",
