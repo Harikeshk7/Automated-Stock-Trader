@@ -70,7 +70,7 @@ function runBot() {
         var string = selectedStrings[i];
         formData.append("strings[]", string);
     }
-    var local_hostUrl = "http://localhost:5000/upload";
+    var local_hostUrl = "http://localhost:5000/upload"; // http://localhost:5000
     fetch(local_hostUrl, {
         method: "POST",
         body: formData
