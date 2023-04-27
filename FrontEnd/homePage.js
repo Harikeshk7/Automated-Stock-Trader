@@ -55,6 +55,22 @@ function displayLog() {
         popupButton.innerHTML = "Display Log";
     }
 }
+function createPriceArray(history) {
+    var currentPrice = 10000;
+    var boughtPrice = 0;
+    var soldPrice = 0;
+    var prices = [{ x: 'temp', y: 10000 }];
+    for (var i = 0; i < history.length; i++) {
+        if (history[i].type == "Bought") {
+            boughtPrice = history[i].shares * history[i].price;
+        }
+        if (history[i].type == "Sold") {
+            soldPrice = history[i].shares * history[i].price;
+            currentPrice += soldPrice - boughtPrice;
+            prices.push({ x: 'temp', y: currentPrice });
+        }
+    }
+}
 function runBot() {
     console.log('Typescript hit');
     var input = document.getElementById("stockInput");
@@ -83,6 +99,8 @@ function runBot() {
         var completeLog = document.getElementById("completeLog");
         completeLog.style.display = "inline";
         writeLog(json.JsonList.history);
+        createPriceArray(json.JsonList.history);
+        console.log(json.JsonList.history);
     })["catch"](function (error) {
         console.error(error);
     });

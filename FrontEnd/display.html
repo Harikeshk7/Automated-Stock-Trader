@@ -7,6 +7,30 @@
   <body>
     <h1><center>Automated Stock Trading Bot</center></h1>
     <h2><div id="balance"></div></h2>
+    <chartDiv>
+      <canvas id="balanceChart"></canvas>
+    </chartDiv>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+      const ctx = document.getElementById('balanceChart');
+    
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: [{
+            data: [{x: '2022-10-06 09:30', y: 10000}],
+            borderWidth: 1,
+          }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+                  } } } 
+      });
+    </script>
     <h4>Choose Stocks to Trade</h4>
       <select id="stockInput" multiple>
         <option value="AMZN">AMZN</option>

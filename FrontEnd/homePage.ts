@@ -1,4 +1,5 @@
 document.body.onload = initializeBalance;
+document.body.onload = initializeGraph;
 
 interface Action
 {
@@ -82,6 +83,32 @@ function displayLog()
   }
 }
 
+function initializeGraph()
+{
+  
+}
+
+function createPriceArray(history: Action[])
+{
+  let currentPrice = 10000
+  let boughtPrice = 0
+  let soldPrice = 0
+  const prices:{x: string,y: number}[] = [{x: '2022-10-06 09:30', y: 10000}]
+  for (let i = 0; i < history.length; i++)
+  {
+    if (history[i].type == "Bought")
+    {
+      boughtPrice = history[i].shares * history[i].price
+    }
+    if (history[i].type == "Sold")
+    {
+      soldPrice = history[i].shares * history[i].price
+      currentPrice += soldPrice - boughtPrice
+      prices.push({x: history[i].time, y: currentPrice})
+    }
+  }
+}
+
 function runBot() {
     console.log('Typescript hit')
     const input = document.getElementById("stockInput") as HTMLSelectElement
@@ -115,7 +142,8 @@ function runBot() {
         const completeLog = document.getElementById("completeLog")!
         completeLog.style.display = "inline"
         writeLog(json.JsonList.history)
-
+        createPriceArray(json.JsonList.history)
+        console.log(json.JsonList.history)
       })
       .catch(error => {
         console.error(error)

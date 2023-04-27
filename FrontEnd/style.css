@@ -26,3 +26,9 @@ popup
 {
     display: none;
 }
+
+chartDiv
+{
+    display: inline-block;
+    width: 700px;
+}
