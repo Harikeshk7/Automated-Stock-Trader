@@ -19,9 +19,9 @@ and reads the contents of the uploaded file using Flask's request.files object
 # def display():
 #     return send_file('static/res.html')
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    return send_file('static/display.html')
+#@app.route("/", methods=["GET", "POST"])
+#def home():
+#    return send_file('static/display.html')
 
 @app.route("/upload", methods=['POST'])
 def upload_file():
@@ -37,7 +37,7 @@ def upload_file():
 
     print("Shifting Directories")
     # os.chdir('../Backend')
-    JsonList = main_trendFollowing(selected_strings)
+    JsonList = runAlgorithm(selected_strings)
     json_returned = {'status':'success', 'JsonList': JsonList}
     # os.chdir('../FrontEnd')
     # Writing to a stdout file
@@ -124,5 +124,5 @@ if __name__ == "__main__":
 
     port = config["port"]
     print(f'App running on port {port}')
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='localhost', port=port)
     
