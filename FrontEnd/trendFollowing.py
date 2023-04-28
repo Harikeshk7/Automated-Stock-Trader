@@ -1,9 +1,5 @@
-import csv
 import pandas as pd
-import datetime as dt
-import os
-import subprocess
-import json
+
 TWOHRS = 120
 total_capital = 10000
 MAX_LINE = 73924
@@ -83,6 +79,7 @@ def find_max():
 
     return line_num
 
+
 def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
     profitDollar = 0
     global total_capital
@@ -96,6 +93,8 @@ def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
         if stock_name not in OwnedStockList:
             OwnedStockList.append(stock_name)
         actions.append({"type":"Bought", "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name})
+        with open('jsonLogFile.txt', 'a') as json_log:
+            json_log.write(f'{stock_name} : Bought {numShares} shares at ${intraday.iloc[i+1].Open} at {intraday.iloc[i+1].Datetime}\n')
     elif((intraday.iloc[i].macd_h > 0) and (intraday.iloc[i+1].macd_h < 0) and (numShares != 0)):
         #sell
         profitDollar += ((numShares) * intraday.iloc[i+1].Open) # 
@@ -104,8 +103,9 @@ def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
         if stock_name in OwnedStockList:
             OwnedStockList.remove(stock_name)
         actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":numShares, "time":intraday.iloc[i+1].Datetime, "stock":stock_name})
+        with open('jsonLogFile.txt', 'a') as json_log:
+            json_log.write(f'{stock_name} : Sold {numShares} shares at ${intraday.iloc[i+1].Open} at {intraday.iloc[i+1].Datetime}\n')
         numShares = 0
-
     return numShares, actions, OwnedStockList
 
 def runAlgorithm(stockList):
@@ -113,16 +113,12 @@ def runAlgorithm(stockList):
     with open('jsonLogFile.txt', 'w') as json_log:
         json_log.write('')
 
-    stock_csv = pd.read_csv('SP_500_Index.csv')
-    #stockList = ['AAPL', 'MSFT', 'TSLA', 'XOM'] # Delete this and use the main function input instead
-
     OwnedStockList = []
     history = []
     stock_shares = {}
     numShares = 0
     actions = []
     for i in range(35,40):
-        history = []
         for j in stockList:
             file = open(f'test_copy/{j}.csv')
             intraday = pd.read_csv(file)
@@ -142,8 +138,7 @@ def runAlgorithm(stockList):
                 actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":stock_shares[j], "time":intraday.iloc[i+1].Datetime, "stock":j})
                 stockList.remove(j)
                 del stock_shares[j]
-            
-    # Sell all owned stocks
+
     for key,value in stock_shares.items():
         file = open(f'test_copy/{key}.csv')
         intraday = pd.read_csv(file)
@@ -152,17 +147,11 @@ def runAlgorithm(stockList):
             actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":value, "time":intraday.iloc[i+1].Datetime, "stock":key})
 
     history += actions
-     
+
     stockJson = {
                 "total_capital" : total_capital, 
                 "OwnedStockList" : OwnedStockList,
                 "history" : history
                          }
-            #print("result" + stockJson)
-            #print("dumps" + json.dumps(stockJson))
-            #print(json.dumps(stockJson))
+
     return stockJson
-
-
-# if __name__ == "__main__":
-#     main()
