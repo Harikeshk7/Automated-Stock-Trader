@@ -9,7 +9,6 @@ repo1_path = ""
 repo2_path = ""
 
 # generate a diffoscope report for the two repositories
-# diffoscope_report = diffoscope.main[(repo1_path, repo2_path)]
 diffoscope_report = diffoscope.comparators.compare(repo1_path, repo2_path)
 
 # print the diffoscope report

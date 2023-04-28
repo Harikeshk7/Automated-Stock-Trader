@@ -2,14 +2,13 @@
 import csv
 import urllib.request as urllib2
 import codecs
-from urllib.parse import urlencode, urljoin, urlparse, quote
 from pandas import *
 
 stock_csv = read_csv('Stocks in the SP 500 Index.csv')
 
 stock = stock_csv['Symbol'].tolist()
 
-key = '63dbd073810b06.72223265' # Trevor's key
+key = '63dbd073810b06.72223265'
 for i in stock:
     url = "https://eodhistoricaldata.com/api/intraday/%s.US?api_token=%s&interval=1m" % (i, key) 
     req = urllib2.Request(url)
