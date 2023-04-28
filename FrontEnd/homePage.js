@@ -89,7 +89,7 @@ function runBot() {
         var string = selectedStrings[i];
         formData.append("strings[]", string);
     }
-    var local_hostUrl = "/upload"; // http://localhost:5000
+    var local_hostUrl = 'http://localhost:5000/upload'; // http://localhost:5000/
     fetch(local_hostUrl, {
         method: "POST",
         body: formData
@@ -102,8 +102,6 @@ function runBot() {
         var completeLog = document.getElementById("completeLog");
         completeLog.style.display = "inline";
         writeLog(json.JsonList.history);
-        createPriceArray(json.JsonList.history);
-        console.log(json.JsonList.history);
     })["catch"](function (error) {
         console.error(error);
     });
