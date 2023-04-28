@@ -1,7 +1,4 @@
-import csv
 import pandas as pd
-import os
-import subprocess
 
 def main():
     stock_csv = pd.read_csv('SP_500_Index.csv')
@@ -19,5 +16,6 @@ def main():
         intraday['macd_s'] = intraday.index.map(macd_s)
         pd.set_option("display.max_columns", None)     
         intraday.to_csv('../test_copy/%s.csv' % (j), index=False) # add script in BackEnd folder that when run, will add macd signals to all csv files 
+
 if __name__ == "__main__":
     main()
