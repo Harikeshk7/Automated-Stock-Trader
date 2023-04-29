@@ -18,6 +18,9 @@ and reads the contents of the uploaded file using Flask's request.files object
 def upload_file():
     print("Recieved")
     selected_strings = request.form.getlist('strings[]')
+    selected_algo = ' '
+    #selected_algo = request.form.get('algorithm') This might be the way to get the string in the backend
+                                                # I did not write this so I don't know. If it's correct, uncomment and delete comment
     if len(selected_strings) == 0:
         return {'status': 'failure'}
 
@@ -27,7 +30,7 @@ def upload_file():
 
     print("Shifting Directories")
 
-    JsonList = runAlgorithm(selected_strings)
+    JsonList = runAlgorithm(selected_strings, selected_algo)
     json_returned = {'status':'success', 'JsonList': JsonList}
 
     return json_returned
