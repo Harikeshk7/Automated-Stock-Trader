@@ -113,15 +113,37 @@ function sleep(ms: number)
   return new Promise(resolve => setTimeout(resolve,ms))
 }
 
-async function updateChart(history: Action[])
+function updateTable(action: Action)
+{
+  const table = document.getElementById('ownedTable') as HTMLTableElement
+  if (action.type == "Bought")
+  {
+    const row = table.tBodies[0].insertRow()
+    const stockCell = row.insertCell()
+    const sharesCell = row.insertCell()
+    const valueCell = row.insertCell()
+    stockCell.innerText = action.stock
+    sharesCell.innerText = action.shares.toFixed(2).toString()
+    valueCell.innerText = (action.shares * action.price).toFixed(2).toString()
+  }
+  if (action.type == "Sold")
+  {
+    table.tBodies[0].deleteRow(-1)
+  }
+}
+
+async function updatePage(history: Action[])
 {
   const chart = Chart.getChart('balanceChart')
+  const balanceArea = document.getElementById("balance")!
   let balance = 10000
   for (let i = 0; i < history.length; i++)
   {
     if (history[i].type == "Bought")
     {
       balance -= history[i].price * history[i].shares
+      await sleep(3000)
+      updateTable(history[i])
     }
     if (history[i].type == "Sold")
     {
@@ -129,28 +151,9 @@ async function updateChart(history: Action[])
       chart!.data.datasets[0].data.push(balance)
       chart!.data.labels!.push(history[i].time)
       await sleep(3000)
+      balanceArea.innerHTML = "Balance: $"+(balance).toFixed(2)
+      updateTable(history[i])
       chart!.update()
-    }
-  }
-}
-
-function createPriceArray(history: Action[])
-{
-  let currentPrice = 10000
-  let boughtPrice = 0
-  let soldPrice = 0
-  const prices:{x: string,y: number}[] = [{x: '2022-10-06 09:30', y: 10000}]
-  for (let i = 0; i < history.length; i++)
-  {
-    if (history[i].type == "Bought")
-    {
-      boughtPrice = history[i].shares * history[i].price
-    }
-    if (history[i].type == "Sold")
-    {
-      soldPrice = history[i].shares * history[i].price
-      currentPrice += soldPrice - boughtPrice
-      prices.push({x: history[i].time, y: currentPrice})
     }
   }
 }
@@ -189,13 +192,11 @@ export function runBot() {
   .then(json => {
       console.log('Displaying on webpage - directory path: ', json.path)
 
-      const balanceArea = document.getElementById("balance")!
-      balanceArea.innerHTML = "Balance: $"+(json.JsonList.total_capital).toFixed(2)
+      writeLog(json.JsonList.history)
+      updatePage(json.JsonList.history)
 
       const completeLog = document.getElementById("completeLog")!
       completeLog.style.display = "inline"
-      writeLog(json.JsonList.history)
-      updateChart(json.JsonList.history)
     })
     .catch(error => {
       console.error(error)

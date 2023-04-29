@@ -123,53 +123,60 @@ function initializeChart() {
 function sleep(ms) {
     return new Promise(function (resolve) { return setTimeout(resolve, ms); });
 }
-function updateChart(history) {
+function updateTable(action) {
+    var table = document.getElementById('ownedTable');
+    if (action.type == "Bought") {
+        var row = table.tBodies[0].insertRow();
+        var stockCell = row.insertCell();
+        var sharesCell = row.insertCell();
+        var valueCell = row.insertCell();
+        stockCell.innerText = action.stock;
+        sharesCell.innerText = action.shares.toFixed(2).toString();
+        valueCell.innerText = (action.shares * action.price).toFixed(2).toString();
+    }
+    if (action.type == "Sold") {
+        table.tBodies[0].deleteRow(-1);
+    }
+}
+function updatePage(history) {
     return __awaiter(this, void 0, void 0, function () {
-        var chart, balance, i;
+        var chart, balanceArea, balance, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     chart = auto_1.Chart.getChart('balanceChart');
+                    balanceArea = document.getElementById("balance");
                     balance = 10000;
                     i = 0;
                     _a.label = 1;
                 case 1:
-                    if (!(i < history.length)) return [3 /*break*/, 4];
-                    if (history[i].type == "Bought") {
-                        balance -= history[i].price * history[i].shares;
-                    }
-                    if (!(history[i].type == "Sold")) return [3 /*break*/, 3];
+                    if (!(i < history.length)) return [3 /*break*/, 6];
+                    if (!(history[i].type == "Bought")) return [3 /*break*/, 3];
+                    balance -= history[i].price * history[i].shares;
+                    return [4 /*yield*/, sleep(3000)];
+                case 2:
+                    _a.sent();
+                    updateTable(history[i]);
+                    _a.label = 3;
+                case 3:
+                    if (!(history[i].type == "Sold")) return [3 /*break*/, 5];
                     balance += history[i].price * history[i].shares;
                     chart.data.datasets[0].data.push(balance);
                     chart.data.labels.push(history[i].time);
                     return [4 /*yield*/, sleep(3000)];
-                case 2:
+                case 4:
                     _a.sent();
+                    balanceArea.innerHTML = "Balance: $" + (balance).toFixed(2);
+                    updateTable(history[i]);
                     chart.update();
-                    _a.label = 3;
-                case 3:
+                    _a.label = 5;
+                case 5:
                     i++;
                     return [3 /*break*/, 1];
-                case 4: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     });
-}
-function createPriceArray(history) {
-    var currentPrice = 10000;
-    var boughtPrice = 0;
-    var soldPrice = 0;
-    var prices = [{ x: '2022-10-06 09:30', y: 10000 }];
-    for (var i = 0; i < history.length; i++) {
-        if (history[i].type == "Bought") {
-            boughtPrice = history[i].shares * history[i].price;
-        }
-        if (history[i].type == "Sold") {
-            soldPrice = history[i].shares * history[i].price;
-            currentPrice += soldPrice - boughtPrice;
-            prices.push({ x: history[i].time, y: currentPrice });
-        }
-    }
 }
 function runBot() {
     console.log('Typescript hit');
@@ -200,12 +207,10 @@ function runBot() {
         .then(function (response) { return response.json(); }, function (reason) { console.log(reason); })
         .then(function (json) {
         console.log('Displaying on webpage - directory path: ', json.path);
-        var balanceArea = document.getElementById("balance");
-        balanceArea.innerHTML = "Balance: $" + (json.JsonList.total_capital).toFixed(2);
+        writeLog(json.JsonList.history);
+        updatePage(json.JsonList.history);
         var completeLog = document.getElementById("completeLog");
         completeLog.style.display = "inline";
-        writeLog(json.JsonList.history);
-        updateChart(json.JsonList.history);
     })["catch"](function (error) {
         console.error(error);
     });

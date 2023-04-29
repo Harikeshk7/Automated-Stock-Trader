@@ -35,25 +35,26 @@
       <button class = "slide" id="selectButton" onclick="myBundle.runBot()">Select</button>
     </div>
     <h2><div id="balance"></div></h2>
-    <chartDiv>
-      <canvas id="balanceChart"></canvas>
-    </chartDiv>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <div id="ownedTable">
-        <table>
+    <div>
+      <chartDiv>
+        <canvas id="balanceChart"></canvas>
+      </chartDiv>
+      <tableDiv>
+        <table id="ownedTable">
           <caption>Currently Owned Stocks</caption>
-          <tr>
-            <th>Stock</th>
-            <th>Shares</th>
-            <th>Value</th>
-          </tr>
-          <tr>
-            <td><br/></td>
-            <td><br/></td>
-            <td><br/></td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Stock</th>
+              <th>Shares</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
         </table>
-      </div>
+      </tableDiv>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <hiddenDiv id="completeLog">
         <text>Complete!</text>
         <button id="logButton" onclick="myBundle.displayLog()">Display Log</button>
