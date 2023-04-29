@@ -165,5 +165,4 @@ def runAlgorithm(stockList, algorithm):
                     "OwnedStockList" : OwnedStockList,
                     "history" : history
                             }
-    print(history)
     return stockJson
