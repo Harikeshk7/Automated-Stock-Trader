@@ -124,6 +124,7 @@ def runAlgorithm(stockList, algorithm):
             intraday = pd.read_csv(file)
             actions = Trend(intraday, 0.02, 0.01, j)
             history += actions
+            history = sorted(history, key=lambda x: x['time'])
         stockJson = {
                     "total_capital" : total_capital, 
                     "OwnedStockList" : OwnedStockList,
@@ -158,11 +159,11 @@ def runAlgorithm(stockList, algorithm):
                 actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":value, "time":intraday.iloc[i+1].Datetime, "stock":key})
 
         history += actions
-
+        history = sorted(history, key=lambda x: x['time'])
         stockJson = {
                     "total_capital" : total_capital, 
                     "OwnedStockList" : OwnedStockList,
                     "history" : history
                             }
-    
+    print(history)
     return stockJson
