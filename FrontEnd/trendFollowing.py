@@ -108,7 +108,7 @@ def macd_action(intraday, i, numShares, stock_name, actions, OwnedStockList):
         numShares = 0
     return numShares, actions, OwnedStockList
 
-def runAlgorithm(stockList):
+def runAlgorithm(stockList, algorithm):
     global total_capital
     with open('jsonLogFile.txt', 'w') as json_log:
         json_log.write('')
@@ -118,40 +118,51 @@ def runAlgorithm(stockList):
     stock_shares = {}
     numShares = 0
     actions = []
-    for i in range(35,100):
+    if(algorithm == 'trendFollowing'):
         for j in stockList:
-            file = open(f'test_copy/{j}.csv')
+            file = open('../test/%s.csv' % (j))
             intraday = pd.read_csv(file)
-            if (j not in stock_shares):
-                numShares = 0
-                stock_shares[j] = 0
-            else:
-                numShares = stock_shares[j]
-            # if statement to choose macd_action() or trendFollowing()
-            numShares, actions, OwnedStockList = macd_action(intraday, i, numShares, j, actions, OwnedStockList)
-            stock_shares[j] = numShares
-            # Do buy/sell action based on macd_h
-            if (i + 1 > len(intraday.index) and stock_shares[j] != 0):
-                profitDollar += ((stock_shares[j]) * intraday.iloc[i+1].Open) # 
-                total_capital += profitDollar
-                profitDollar = 0
-                actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":stock_shares[j], "time":intraday.iloc[i+1].Datetime, "stock":j})
-                stockList.remove(j)
-                del stock_shares[j]
+            actions = Trend(intraday, 0.02, 0.01, j)
+            history += actions
+        stockJson = {
+                    "total_capital" : total_capital, 
+                    "OwnedStockList" : OwnedStockList,
+                    "history" : history
+                }
+    elif (algorithm == ' ' or algorithm == 'MACD'):   
+        for i in range(35,100):
+            for j in stockList:
+                file = open(f'test_copy/{j}.csv')
+                intraday = pd.read_csv(file)
+                if (j not in stock_shares):
+                    numShares = 0
+                    stock_shares[j] = 0
+                else:
+                    numShares = stock_shares[j]
+                numShares, actions, OwnedStockList = macd_action(intraday, i, numShares, j, actions, OwnedStockList)
+                stock_shares[j] = numShares
+                # Do buy/sell action based on macd_h
+                if (i + 1 > len(intraday.index) and stock_shares[j] != 0):
+                    profitDollar += ((stock_shares[j]) * intraday.iloc[i+1].Open) # 
+                    total_capital += profitDollar
+                    profitDollar = 0
+                    actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":stock_shares[j], "time":intraday.iloc[i+1].Datetime, "stock":j})
+                    stockList.remove(j)
+                    del stock_shares[j]
 
-    for key,value in stock_shares.items():
-        file = open(f'test_copy/{key}.csv')
-        intraday = pd.read_csv(file)
-        if (value != 0):
-            total_capital += ((value) * intraday.iloc[i+1].Open) # 
-            actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":value, "time":intraday.iloc[i+1].Datetime, "stock":key})
+        for key,value in stock_shares.items():
+            file = open(f'test_copy/{key}.csv')
+            intraday = pd.read_csv(file)
+            if (value != 0):
+                total_capital += ((value) * intraday.iloc[i+1].Open) # 
+                actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":value, "time":intraday.iloc[i+1].Datetime, "stock":key})
 
-    history += actions
+        history += actions
 
-    stockJson = {
-                "total_capital" : total_capital, 
-                "OwnedStockList" : OwnedStockList,
-                "history" : history
-                         }
-
+        stockJson = {
+                    "total_capital" : total_capital, 
+                    "OwnedStockList" : OwnedStockList,
+                    "history" : history
+                            }
+    
     return stockJson
