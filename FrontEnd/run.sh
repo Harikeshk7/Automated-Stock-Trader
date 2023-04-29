@@ -4,6 +4,7 @@
 # pip install -r requirements.txt
 echo "COMPILING TYPESCRIPT"
 npx tsc homePage.ts
+npx browserify homePage.js --standalone myBundle > bundle.js
 echo "STARTING FRONT-END SERVER"
 npx http-server &
 

@@ -118,7 +118,7 @@ def runAlgorithm(stockList):
     stock_shares = {}
     numShares = 0
     actions = []
-    for i in range(35,40):
+    for i in range(35,100):
         for j in stockList:
             file = open(f'test_copy/{j}.csv')
             intraday = pd.read_csv(file)
