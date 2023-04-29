@@ -5,6 +5,7 @@
     <title>Automated Stock Trading Bot</title>
   </head>
   <body>
+    <script>var exports = {};</script>
     <h1><center>Automated Stock Trading Bot</center></h1>
     <h2><div id="balance"></div></h2>
     <chartDiv>
@@ -13,24 +14,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <script>
-      const ctx = document.getElementById('balanceChart');
-    
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            data: [{x: '2022-10-06 09:30', y: 10000}],
-            borderWidth: 1,
-          }]
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: false,
-                  } } } 
-      });
-    </script>
     <h4>Choose Stocks to Trade</h4>
       <select id="stockInput" multiple>
         <option value="AMZN">AMZN</option>
@@ -44,7 +27,7 @@
         <option value="NVDA">NVDA</option>
         <option value="XOM">XOM</option>
       </select>
-      <button id="selectButton" onclick="runBot()">Select</button>
+      <button id="selectButton" onclick="myBundle.runBot()">Select</button>
       <div id="ownedTable">
         <table>
           <caption>Currently Owned Stocks</caption>
@@ -62,9 +45,9 @@
       </div>
       <hiddenDiv id="completeLog">
         <text>Complete!</text>
-        <button id="logButton" onclick="displayLog()">Display Log</button>
+        <button id="logButton" onclick="myBundle.displayLog()">Display Log</button>
         <popup id="logPopup"></popup>
       </hiddenDiv>
-      <script src="homePage.js"></script>
+      <script src="bundle.js"></script>
   </body>
 </html>

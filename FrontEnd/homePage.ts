@@ -1,5 +1,9 @@
-document.body.onload = initializeBalance;
-document.body.onload = initializeGraph;
+import { Chart } from 'chart.js/auto'
+
+document.body.onload = function() {
+  initializeBalance()
+  initializeChart()
+}
 
 interface Action
 {
@@ -34,11 +38,11 @@ function convertTimeString(time: any): string
 
 function initializeBalance()
 {
-    let balance = 10000
-    const app = document.getElementById("balance")!
-    const p = document.createElement("p")
-    p.innerHTML = "Balance: $"+balance
-    app.append(p)
+  let balance = 10000
+  const app = document.getElementById("balance")!
+  const p = document.createElement("p")
+  p.innerHTML = "Balance: $"+balance
+  app.append(p)
 }
 
 function writeLog(history: Action[])
@@ -46,7 +50,7 @@ function writeLog(history: Action[])
   const actionList:Action[] = []
   for (let i = 0; i < history.length; i++)
   {
-    const currentAction = history[i];
+    const currentAction = history[i]
     const newAction:Action = {
       type: currentAction.type,
       price: currentAction.price,
@@ -67,7 +71,7 @@ function writeLog(history: Action[])
   }
 }
 
-function displayLog()
+export function displayLog()
 {
   const popupText = document.getElementById("logPopup")!
   const popupButton = document.getElementById("logButton")!
@@ -83,9 +87,51 @@ function displayLog()
   }
 }
 
-function initializeGraph()
+function initializeChart()
 {
-  
+  const ctx = document.getElementById('balanceChart') as HTMLCanvasElement
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: [10000],
+        borderWidth: 1,
+      }],
+      labels: ['2022-10-06 09:30']
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
+              } } } 
+  });
+}
+
+function sleep(ms: number)
+{
+  return new Promise(resolve => setTimeout(resolve,ms))
+}
+
+async function updateChart(history: Action[])
+{
+  const chart = Chart.getChart('balanceChart')
+  let balance = 10000
+  for (let i = 0; i < history.length; i++)
+  {
+    if (history[i].type == "Bought")
+    {
+      balance -= history[i].price * history[i].shares
+    }
+    if (history[i].type == "Sold")
+    {
+      balance += history[i].price * history[i].shares
+      chart!.data.datasets[0].data.push(balance)
+      chart!.data.labels!.push(history[i].time)
+      await sleep(3000)
+      chart!.update()
+    }
+  }
 }
 
 function createPriceArray(history: Action[])
@@ -109,7 +155,7 @@ function createPriceArray(history: Action[])
   }
 }
 
-function runBot() {
+export function runBot() {
   console.log('Typescript hit')
   const input = document.getElementById("stockInput") as HTMLSelectElement
   console.log('Input')
@@ -142,7 +188,7 @@ function runBot() {
       const completeLog = document.getElementById("completeLog")!
       completeLog.style.display = "inline"
       writeLog(json.JsonList.history)
-
+      updateChart(json.JsonList.history)
     })
     .catch(error => {
       console.error(error)
