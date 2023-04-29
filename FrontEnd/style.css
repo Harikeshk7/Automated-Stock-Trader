@@ -17,18 +17,43 @@ th, td
 
 tr:hover {background-color: lightblue;}
 
+chartDiv
+{
+    display: inline-block;
+    width: 700px;
+}
+
+select {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #444;
+}
+
+option:hover {background-color: lightblue;}
+
 hiddenDiv
 {
     display: none;
+}
+
+algoDropdown
+{
+    display: inline-block;
+    margin-right: 100px;
+}
+
+stockDropdown
+{
+    display: inline-block;
+    margin-right: 100px;
 }
 
 popup
 {
     display: none;
 }
-
-chartDiv
-{
-    display: inline-block;
-    width: 700px;
-}
+  

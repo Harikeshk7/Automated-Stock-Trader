@@ -7,27 +7,38 @@
   <body>
     <script>var exports = {};</script>
     <h1><center>Automated Stock Trading Bot</center></h1>
+    <div>
+      <algoDropdown>
+        <h4>Choose Algorithm</h4>
+        <select id="algoInput">
+          <option selected disabled>Select</option>
+          <option value="macd">MACD</option>
+          <option value="trendFollowing">Trend Following</option>
+          <option value="custom">Custom...</option>
+        </select>
+      </algoDropdown>
+      <stockDropdown>
+        <h4>Choose Stocks to Trade</h4>
+        <select id="stockInput" multiple>
+          <option value="AMZN">AMZN</option>
+          <option value="BRK-B">BRK-B</option>
+          <option value="COF">COF</option>
+          <option value="GOOG">GOOG</option>
+          <option value="JPM">JPM</option>
+          <option value="META">META</option>
+          <option value="MSFT">MSFT</option>
+          <option value="NFLX">NFLX</option>
+          <option value="NVDA">NVDA</option>
+          <option value="XOM">XOM</option>
+        </select>
+      </stockDropdown>
+      <button class = "slide" id="selectButton" onclick="myBundle.runBot()">Select</button>
+    </div>
     <h2><div id="balance"></div></h2>
     <chartDiv>
       <canvas id="balanceChart"></canvas>
     </chartDiv>
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <h4>Choose Stocks to Trade</h4>
-      <select id="stockInput" multiple>
-        <option value="AMZN">AMZN</option>
-        <option value="BRK-B">BRK-B</option>
-        <option value="COF">COF</option>
-        <option value="GOOG">GOOG</option>
-        <option value="JPM">JPM</option>
-        <option value="META">META</option>
-        <option value="MSFT">MSFT</option>
-        <option value="NFLX">NFLX</option>
-        <option value="NVDA">NVDA</option>
-        <option value="XOM">XOM</option>
-      </select>
-      <button id="selectButton" onclick="myBundle.runBot()">Select</button>
       <div id="ownedTable">
         <table>
           <caption>Currently Owned Stocks</caption>

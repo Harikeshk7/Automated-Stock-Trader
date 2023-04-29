@@ -157,13 +157,19 @@ function createPriceArray(history: Action[])
 
 export function runBot() {
   console.log('Typescript hit')
-  const input = document.getElementById("stockInput") as HTMLSelectElement
+  const stockInput = document.getElementById("stockInput") as HTMLSelectElement
+  const algoInput = document.getElementById("algoInput") as HTMLSelectElement
   console.log('Input')
-  const selectedStrings = Array.from(input.selectedOptions, option => option.value)
-  console.log(selectedStrings)
+  const selectedStrings = Array.from(stockInput.selectedOptions, option => option.value)
+  const algorithm = algoInput.value
 
   if (selectedStrings.length === 0) {
     console.error("No strings selected.")
+    return;
+  }
+  if (algorithm === 'Select')
+  {
+    console.error("No algorithm selected.")
     return;
   }
 
@@ -172,6 +178,7 @@ export function runBot() {
     const string = selectedStrings[i]
     formData.append("strings[]", string)
   }
+  formData.append("algorithm", algorithm)
   const local_hostUrl = 'http://localhost:5000/upload';
 
   fetch(local_hostUrl, {
