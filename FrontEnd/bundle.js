@@ -59,7 +59,6 @@ function convertTimeString(time) {
     return (match[2] + "/" + match[3] + "/" + match[1] + " " + match[4]);
 }
 function initializeBalance() {
-    console.log('Hi');
     var balance = 10000;
     var app = document.getElementById("balance");
     var p = document.createElement("p");
@@ -102,7 +101,6 @@ function displayLog() {
 }
 exports.displayLog = displayLog;
 function initializeChart() {
-    console.log('Hi2');
     var ctx = document.getElementById('balanceChart');
     new auto_1.Chart(ctx, {
         type: 'line',
@@ -176,12 +174,17 @@ function createPriceArray(history) {
 }
 function runBot() {
     console.log('Typescript hit');
-    var input = document.getElementById("stockInput");
+    var stockInput = document.getElementById("stockInput");
+    var algoInput = document.getElementById("algoInput");
     console.log('Input');
-    var selectedStrings = Array.from(input.selectedOptions, function (option) { return option.value; });
-    console.log(selectedStrings);
+    var selectedStrings = Array.from(stockInput.selectedOptions, function (option) { return option.value; });
+    var algorithm = algoInput.value;
     if (selectedStrings.length === 0) {
         console.error("No strings selected.");
+        return;
+    }
+    if (algorithm === 'Select') {
+        console.error("No algorithm selected.");
         return;
     }
     var formData = new FormData();
@@ -189,6 +192,7 @@ function runBot() {
         var string = selectedStrings[i];
         formData.append("strings[]", string);
     }
+    formData.append("algorithm", algorithm);
     var local_hostUrl = 'http://localhost:5000/upload';
     fetch(local_hostUrl, {
         method: "POST",

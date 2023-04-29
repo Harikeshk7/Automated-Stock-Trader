@@ -129,7 +129,7 @@ def runAlgorithm(stockList, algorithm):
                     "OwnedStockList" : OwnedStockList,
                     "history" : history
                 }
-    elif (algorithm == ' ' or algorithm == 'MACD'):   
+    elif (algorithm == 'macd' or algorithm != 'trendFollowing'):   
         for i in range(35,100):
             for j in stockList:
                 file = open(f'test_copy/{j}.csv')
