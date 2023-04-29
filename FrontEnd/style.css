@@ -21,6 +21,15 @@ chartDiv
 {
     display: inline-block;
     width: 700px;
+    vertical-align: top;
+    margin-right: 100px;
+}
+
+tableDiv
+{
+    display: inline-block;
+    width: 500px;
+    vertical-align: top;
 }
 
 select {
@@ -44,12 +53,14 @@ algoDropdown
 {
     display: inline-block;
     margin-right: 100px;
+    vertical-align: top;
 }
 
 stockDropdown
 {
     display: inline-block;
     margin-right: 100px;
+    vertical-align: top;
 }
 
 popup
