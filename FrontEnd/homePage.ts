@@ -47,7 +47,9 @@ function initializeBalance()
 
 function writeLog(history: Action[])
 {
+  const popupText = document.getElementById("logPopup")!
   const actionList:Action[] = []
+  popupText.innerHTML = ""
   for (let i = 0; i < history.length; i++)
   {
     const currentAction = history[i]
@@ -61,7 +63,7 @@ function writeLog(history: Action[])
     actionList.push(newAction)
   }
   actionList.sort(compareTime)
-  const popupText = document.getElementById("logPopup")!
+
   for (let i = 0; i < actionList.length; i++)
   {
     const action = document.createTextNode(actionList[i].type+" "+actionList[i].shares.toFixed(2)+" shares of "
@@ -136,9 +138,16 @@ async function updatePage(history: Action[])
 {
   const chart = Chart.getChart('balanceChart')
   const balanceArea = document.getElementById("balance")!
+  const button = document.getElementById("selectButton")!
+  const table = document.getElementById('ownedTable') as HTMLTableElement
+
   let balance = 10000
   let ownValue = 0
   let currentValue = 0
+
+  chart!.data.datasets[0].data = [10000]
+  chart!.data.labels! = ['2022-10-06 09:30']
+  table.tBodies[0].innerHTML = ""
 
   for (let i = 0; i < history.length; i++)
   {
@@ -162,6 +171,7 @@ async function updatePage(history: Action[])
       chart!.update()
     }
   }
+  button.innerHTML = "Run"
 }
 
 export function toggleSelectButton() {
@@ -224,6 +234,8 @@ export function searchStocks(): void {
 
 
 export function runBot() {
+  const button = document.getElementById("selectButton")!
+  button.innerHTML = "Stop"
   const loadingText = document.getElementById("loadingText")!
   loadingText.style.display = "inline-block"
   console.log('Typescript hit')

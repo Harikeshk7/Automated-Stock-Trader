@@ -66,7 +66,9 @@ function initializeBalance() {
     app.append(p);
 }
 function writeLog(history) {
+    var popupText = document.getElementById("logPopup");
     var actionList = [];
+    popupText.innerHTML = "";
     for (var i = 0; i < history.length; i++) {
         var currentAction = history[i];
         var newAction = {
@@ -79,7 +81,6 @@ function writeLog(history) {
         actionList.push(newAction);
     }
     actionList.sort(compareTime);
-    var popupText = document.getElementById("logPopup");
     for (var i = 0; i < actionList.length; i++) {
         var action = document.createTextNode(actionList[i].type + " " + actionList[i].shares.toFixed(2) + " shares of "
             + actionList[i].stock + " at $" + actionList[i].price.toFixed(2) + " at " + convertTimeString(actionList[i].time));
@@ -141,15 +142,20 @@ function updateTable(action) {
 }
 function updatePage(history) {
     return __awaiter(this, void 0, void 0, function () {
-        var chart, balanceArea, balance, ownValue, currentValue, i;
+        var chart, balanceArea, button, table, balance, ownValue, currentValue, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     chart = auto_1.Chart.getChart('balanceChart');
                     balanceArea = document.getElementById("balance");
+                    button = document.getElementById("selectButton");
+                    table = document.getElementById('ownedTable');
                     balance = 10000;
                     ownValue = 0;
                     currentValue = 0;
+                    chart.data.datasets[0].data = [10000];
+                    chart.data.labels = ['2022-10-06 09:30'];
+                    table.tBodies[0].innerHTML = "";
                     i = 0;
                     _a.label = 1;
                 case 1:
@@ -179,7 +185,9 @@ function updatePage(history) {
                 case 5:
                     i++;
                     return [3 /*break*/, 1];
-                case 6: return [2 /*return*/];
+                case 6:
+                    button.innerHTML = "Run";
+                    return [2 /*return*/];
             }
         });
     });
@@ -245,6 +253,8 @@ function searchStocks() {
 exports.searchStocks = searchStocks;
 function runBot() {
     var _a;
+    var button = document.getElementById("selectButton");
+    button.innerHTML = "Stop";
     var loadingText = document.getElementById("loadingText");
     loadingText.style.display = "inline-block";
     console.log('Typescript hit');
