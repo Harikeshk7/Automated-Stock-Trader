@@ -134,8 +134,11 @@ function updateTable(action: Action)
   }
 }
 
+let buttonVal = false;
+
 async function updatePage(history: Action[])
 {
+  
   const chart = Chart.getChart('balanceChart')
   const balanceArea = document.getElementById("balance")!
   const button = document.getElementById("selectButton")!
@@ -151,6 +154,9 @@ async function updatePage(history: Action[])
 
   for (let i = 0; i < history.length; i++)
   {
+    if (!buttonVal){
+      break;
+    }
     if (history[i].type == "Bought")
     {
       balance -= history[i].price * history[i].shares
@@ -172,6 +178,7 @@ async function updatePage(history: Action[])
     }
   }
   button.innerHTML = "Run"
+  buttonVal = false;
 }
 
 export function toggleSelectButton() {
@@ -232,16 +239,27 @@ export function searchStocks(): void {
   }
 }
 
+export function stopFunction(){
+  buttonVal = false;
+  const button = document.getElementById("selectButton")!
+  button.innerHTML = "Run"
+  button.removeEventListener("click", stopFunction)
+}
 
 export function runBot() {
   const button = document.getElementById("selectButton")!
-  button.innerHTML = "Stop"
+  if (button.innerHTML == "Run"){
+    buttonVal = true;
+    button.innerHTML = "Stop"
+    button.addEventListener("click", stopFunction);
+  }
   const loadingText = document.getElementById("loadingText")!
   loadingText.style.display = "inline-block"
   console.log('Typescript hit')
   const stockInput = document.getElementById("stockInput") as HTMLSelectElement
   const algoInput = document.getElementById("algoInput") as HTMLSelectElement  
   const customFileInput = document.getElementById("customFileInput") as HTMLInputElement;
+  
 
   if (!customFileInput?.files?.length && algoInput.value === "custom") {
     alert("Please upload a custom algorithm file.");
