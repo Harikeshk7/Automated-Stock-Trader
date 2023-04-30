@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.runBot = exports.searchStocks = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = void 0;
+exports.runBot = exports.stopFunction = exports.searchStocks = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = void 0;
 var auto_1 = require("chart.js/auto");
 document.body.onload = function () {
     initializeBalance();
@@ -139,6 +139,7 @@ function updateTable(action) {
         table.tBodies[0].deleteRow(-1);
     }
 }
+var buttonVal = false;
 function updatePage(history) {
     return __awaiter(this, void 0, void 0, function () {
         var chart, balanceArea, button, table, balance, ownValue, currentValue, i;
@@ -159,6 +160,9 @@ function updatePage(history) {
                     _a.label = 1;
                 case 1:
                     if (!(i < history.length)) return [3 /*break*/, 6];
+                    if (!buttonVal) {
+                        return [3 /*break*/, 6];
+                    }
                     if (!(history[i].type == "Bought")) return [3 /*break*/, 3];
                     balance -= history[i].price * history[i].shares;
                     ownValue += history[i].price * history[i].shares;
@@ -186,6 +190,7 @@ function updatePage(history) {
                     return [3 /*break*/, 1];
                 case 6:
                     button.innerHTML = "Run";
+                    buttonVal = false;
                     return [2 /*return*/];
             }
         });
@@ -250,10 +255,21 @@ function searchStocks() {
     }
 }
 exports.searchStocks = searchStocks;
+function stopFunction() {
+    buttonVal = false;
+    var button = document.getElementById("selectButton");
+    button.innerHTML = "Run";
+    button.removeEventListener("click", stopFunction);
+}
+exports.stopFunction = stopFunction;
 function runBot() {
     var _a;
     var button = document.getElementById("selectButton");
-    button.innerHTML = "Stop";
+    if (button.innerHTML == "Run") {
+        buttonVal = true;
+        button.innerHTML = "Stop";
+        button.addEventListener("click", stopFunction);
+    }
     var loadingText = document.getElementById("loadingText");
     loadingText.style.display = "inline-block";
     console.log('Typescript hit');
