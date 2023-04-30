@@ -190,7 +190,6 @@ export function toggleStockList() {
   }
 }
 
-
 export function toggleCustom() {
   const customDiv = document.getElementById("customDiv") as HTMLDivElement | null;
   const algoInput = document.getElementById("algoInput") as HTMLSelectElement | null;
@@ -200,6 +199,23 @@ export function toggleCustom() {
     customDiv.style.display = "none";
   }
 }
+
+export function searchStocks(): void {
+  const input = document.getElementById("stockSearch") as HTMLInputElement;
+  const filter = input.value.toUpperCase();
+  const select = document.getElementById("stockInput") as HTMLSelectElement;
+  const options = select.getElementsByTagName("option");
+
+  for (let i = 0; i < options.length; i++) {
+    const symbol = options[i].value;
+    if (symbol.toUpperCase().indexOf(filter) > -1) {
+      options[i].style.display = "";
+    } else {
+      options[i].style.display = "none";
+    }
+  }
+}
+
 
 export function runBot() {
   console.log('Typescript hit')
@@ -260,3 +276,4 @@ export function runBot() {
       console.error(error)
     })
 }
+
