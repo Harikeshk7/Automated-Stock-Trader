@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.runBot = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = void 0;
+exports.runBot = exports.searchStocks = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = void 0;
 var auto_1 = require("chart.js/auto");
 document.body.onload = function () {
     initializeBalance();
@@ -221,6 +221,22 @@ function toggleCustom() {
     }
 }
 exports.toggleCustom = toggleCustom;
+function searchStocks() {
+    var input = document.getElementById("stockSearch");
+    var filter = input.value.toUpperCase();
+    var select = document.getElementById("stockInput");
+    var options = select.getElementsByTagName("option");
+    for (var i = 0; i < options.length; i++) {
+        var symbol = options[i].value;
+        if (symbol.toUpperCase().indexOf(filter) > -1) {
+            options[i].style.display = "";
+        }
+        else {
+            options[i].style.display = "none";
+        }
+    }
+}
+exports.searchStocks = searchStocks;
 function runBot() {
     var _a;
     console.log('Typescript hit');
