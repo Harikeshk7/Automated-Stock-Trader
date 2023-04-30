@@ -69,7 +69,7 @@ function writeLog(history: Action[])
     const action = document.createTextNode(actionList[i].type+" "+actionList[i].shares.toFixed(2)+" shares of "
     +actionList[i].stock+" at $"+actionList[i].price.toFixed(2)+" at "+convertTimeString(actionList[i].time))
     popupText.appendChild(action)
-    popupText.appendChild(document.createElement("br"))
+    popupText.appendChild(document.createElement("hr"))
   }
 }
 
@@ -79,7 +79,7 @@ export function displayLog()
   const popupButton = document.getElementById("logButton")!
   if (popupText.style.display === "none")
   {
-    popupText.style.display = "block"
+    popupText.style.display = "inline-block"
     popupButton.innerHTML = "Hide Log"
   }
   else
@@ -291,7 +291,9 @@ export function runBot() {
       updatePage(json.JsonList.history)
 
       const completeLog = document.getElementById("completeLog")!
-      completeLog.style.display = "inline"
+      completeLog.style.display = "inline-block"
+      const logButton = document.getElementById("logButton")!
+      logButton.style.display = "inline"
     })
     .catch(error => {
       console.error(error)

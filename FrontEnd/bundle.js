@@ -85,14 +85,14 @@ function writeLog(history) {
         var action = document.createTextNode(actionList[i].type + " " + actionList[i].shares.toFixed(2) + " shares of "
             + actionList[i].stock + " at $" + actionList[i].price.toFixed(2) + " at " + convertTimeString(actionList[i].time));
         popupText.appendChild(action);
-        popupText.appendChild(document.createElement("br"));
+        popupText.appendChild(document.createElement("hr"));
     }
 }
 function displayLog() {
     var popupText = document.getElementById("logPopup");
     var popupButton = document.getElementById("logButton");
     if (popupText.style.display === "none") {
-        popupText.style.display = "block";
+        popupText.style.display = "inline-block";
         popupButton.innerHTML = "Hide Log";
     }
     else {
@@ -302,7 +302,9 @@ function runBot() {
         loadingText.style.display = "none";
         updatePage(json.JsonList.history);
         var completeLog = document.getElementById("completeLog");
-        completeLog.style.display = "inline";
+        completeLog.style.display = "inline-block";
+        var logButton = document.getElementById("logButton");
+        logButton.style.display = "inline";
     })["catch"](function (error) {
         console.error(error);
     });
