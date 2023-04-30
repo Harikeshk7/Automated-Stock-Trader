@@ -130,11 +130,13 @@ def runAlgorithm(stockList, algorithm):
                     "OwnedStockList" : OwnedStockList,
                     "history" : history
                 }
-    elif (algorithm == 'macd' or algorithm != 'trendFollowing'):   
+    elif (algorithm == 'macd' or algorithm != 'trendFollowing'):
+        intraday_csv = {}
+        for stock in stockList:
+            file = open(f'test_copy/{stock}.csv')
+            intraday_csv[stock] = pd.read_csv(file)
         for i in range(35,100):
-            for j in stockList:
-                file = open(f'test_copy/{j}.csv')
-                intraday = pd.read_csv(file)
+            for j,intraday in intraday_csv.items():
                 if (j not in stock_shares):
                     numShares = 0
                     stock_shares[j] = 0
@@ -148,9 +150,9 @@ def runAlgorithm(stockList, algorithm):
                     total_capital += profitDollar
                     profitDollar = 0
                     actions.append({"type":"Sold", "price":intraday.iloc[i+1].Open, "shares":stock_shares[j], "time":intraday.iloc[i+1].Datetime, "stock":j})
-                    stockList.remove(j)
+                    del intraday_csv[j]
                     del stock_shares[j]
-
+                
         for key,value in stock_shares.items():
             file = open(f'test_copy/{key}.csv')
             intraday = pd.read_csv(file)
