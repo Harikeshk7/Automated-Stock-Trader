@@ -59,7 +59,7 @@ function convertTimeString(time) {
     return (match[2] + "/" + match[3] + "/" + match[1] + " " + match[4]);
 }
 function initializeBalance() {
-    var balance = 10000;
+    var balance = 1000;
     var app = document.getElementById("balance");
     var p = document.createElement("p");
     p.innerHTML = "Total Value: $" + balance;
@@ -107,7 +107,7 @@ function initializeChart() {
         type: 'line',
         data: {
             datasets: [{
-                    data: [10000],
+                    data: [1000],
                     borderWidth: 1
                 }],
             labels: ['2022-10-06 09:30']
@@ -151,10 +151,10 @@ function updatePage(history) {
                     balanceArea = document.getElementById("balance");
                     button = document.getElementById("selectButton");
                     table = document.getElementById('ownedTable');
-                    balance = 10000;
+                    balance = 1000;
                     ownValue = 0;
                     currentValue = 0;
-                    chart.data.datasets[0].data = [10000];
+                    chart.data.datasets[0].data = [1000];
                     chart.data.labels = ['2022-10-06 09:30'];
                     table.tBodies[0].innerHTML = "";
                     i = 0;

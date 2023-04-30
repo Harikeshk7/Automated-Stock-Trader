@@ -38,7 +38,7 @@ function convertTimeString(time: any): string
 
 function initializeBalance()
 {
-  let balance = 10000
+  let balance = 1000
   const app = document.getElementById("balance")!
   const p = document.createElement("p")
   p.innerHTML = "Total Value: $"+balance
@@ -96,7 +96,7 @@ function initializeChart()
     type: 'line',
     data: {
       datasets: [{
-        data: [10000],
+        data: [1000],
         borderWidth: 1,
       }],
       labels: ['2022-10-06 09:30']
@@ -144,11 +144,11 @@ async function updatePage(history: Action[])
   const button = document.getElementById("selectButton")!
   const table = document.getElementById('ownedTable') as HTMLTableElement
 
-  let balance = 10000
+  let balance = 1000
   let ownValue = 0
   let currentValue = 0
 
-  chart!.data.datasets[0].data = [10000]
+  chart!.data.datasets[0].data = [1000]
   chart!.data.labels! = ['2022-10-06 09:30']
   table.tBodies[0].innerHTML = ""
 

@@ -1,7 +1,7 @@
 import pandas as pd
 
 TWOHRS = 120
-total_capital = 10000
+total_capital = 1000
 MAX_LINE = 73924
 
 def Trend(df, entry, exit, stock_name): # Gets called for each day for all S&P500 stocks, 
@@ -135,7 +135,7 @@ def runAlgorithm(stockList, algorithm):
         for stock in stockList:
             file = open(f'test_copy/{stock}.csv')
             intraday_csv[stock] = pd.read_csv(file)
-        for i in range(35,10000):
+        for i in range(35,15066):
             for j,intraday in intraday_csv.items():
                 if (j not in stock_shares):
                     numShares = 0
