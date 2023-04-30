@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.runBot = exports.displayLog = void 0;
+exports.runBot = exports.toggleCustom = exports.displayLog = void 0;
 var auto_1 = require("chart.js/auto");
 document.body.onload = function () {
     initializeBalance();
@@ -179,10 +179,27 @@ function updatePage(history) {
         });
     });
 }
+function toggleCustom() {
+    var customDiv = document.getElementById("customDiv");
+    var algoInput = document.getElementById("algoInput");
+    if (algoInput && algoInput.value === "custom" && customDiv) {
+        customDiv.style.display = "block";
+    }
+    else if (customDiv) {
+        customDiv.style.display = "none";
+    }
+}
+exports.toggleCustom = toggleCustom;
 function runBot() {
+    var _a;
     console.log('Typescript hit');
     var stockInput = document.getElementById("stockInput");
     var algoInput = document.getElementById("algoInput");
+    var customFileInput = document.getElementById("customFileInput");
+    if (!((_a = customFileInput === null || customFileInput === void 0 ? void 0 : customFileInput.files) === null || _a === void 0 ? void 0 : _a.length) && algoInput.value === "custom") {
+        alert("Please upload a custom algorithm file.");
+        return;
+    }
     console.log('Input');
     var selectedStrings = Array.from(stockInput.selectedOptions, function (option) { return option.value; });
     var algorithm = algoInput.value;
@@ -198,6 +215,14 @@ function runBot() {
     for (var i = 0; i < selectedStrings.length; i++) {
         var string = selectedStrings[i];
         formData.append("strings[]", string);
+    }
+    if (algorithm === "custom") {
+        var file = customFileInput.files[0];
+        formData.append("customFileInput", file, file.name);
+        console.log(formData.get("file")); // check if file is appended
+    }
+    else {
+        formData.append("algorithm", algorithm);
     }
     formData.append("algorithm", algorithm);
     var local_hostUrl = 'http://localhost:5000/upload';

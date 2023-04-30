@@ -158,10 +158,27 @@ async function updatePage(history: Action[])
   }
 }
 
+export function toggleCustom() {
+  const customDiv = document.getElementById("customDiv") as HTMLDivElement | null;
+  const algoInput = document.getElementById("algoInput") as HTMLSelectElement | null;
+  if (algoInput && algoInput.value === "custom" && customDiv) {
+    customDiv.style.display = "block";
+  } else if (customDiv) {
+    customDiv.style.display = "none";
+  }
+}
+
 export function runBot() {
   console.log('Typescript hit')
   const stockInput = document.getElementById("stockInput") as HTMLSelectElement
-  const algoInput = document.getElementById("algoInput") as HTMLSelectElement
+  const algoInput = document.getElementById("algoInput") as HTMLSelectElement  
+  const customFileInput = document.getElementById("customFileInput") as HTMLInputElement;
+
+  if (!customFileInput?.files?.length && algoInput.value === "custom") {
+    alert("Please upload a custom algorithm file.");
+    return;
+  }
+
   console.log('Input')
   const selectedStrings = Array.from(stockInput.selectedOptions, option => option.value)
   const algorithm = algoInput.value
@@ -181,6 +198,14 @@ export function runBot() {
     const string = selectedStrings[i]
     formData.append("strings[]", string)
   }
+  if (algorithm === "custom"){
+    const file = customFileInput.files![0];
+    formData.append("customFileInput", file, file.name);
+    console.log(formData.get("file")); // check if file is appended
+  } else{
+    formData.append("algorithm", algorithm);
+  }
+
   formData.append("algorithm", algorithm)
   const local_hostUrl = 'http://localhost:5000/upload';
 
