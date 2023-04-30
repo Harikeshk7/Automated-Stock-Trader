@@ -158,6 +158,39 @@ async function updatePage(history: Action[])
   }
 }
 
+export function toggleSelectButton() {
+  const selectButton = document.getElementById("selectButton") as HTMLButtonElement | null;
+  const stockInput = document.getElementById("stockInput") as HTMLSelectElement | null;
+
+  if (stockInput && selectButton) {
+    if (stockInput.value.length > 0) {
+      selectButton.classList.remove("hide");
+    } else {
+      selectButton.classList.add("hide");
+    }
+  }
+}
+
+export function toggleStockList() {
+  const stockDropdown = document.getElementById("stockDropdown") as HTMLDivElement | null;
+  const algoInput = document.getElementById("algoInput") as HTMLSelectElement | null;
+  const selectButton = document.getElementById("selectButton") as HTMLButtonElement | null;
+  
+  if (algoInput !== null && algoInput.value !== null && algoInput.value !== "Select") {
+    if (stockDropdown !== null) {
+      stockDropdown.classList.remove("hide");
+    }
+  } else {
+    if (stockDropdown !== null) {
+      stockDropdown.classList.add("hide");
+    }
+    if (selectButton !== null) {
+      selectButton.classList.add("hide");
+    }
+  }
+}
+
+
 export function toggleCustom() {
   const customDiv = document.getElementById("customDiv") as HTMLDivElement | null;
   const algoInput = document.getElementById("algoInput") as HTMLSelectElement | null;
