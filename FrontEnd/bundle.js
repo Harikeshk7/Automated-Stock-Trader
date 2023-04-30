@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.runBot = exports.toggleCustom = exports.displayLog = void 0;
+exports.runBot = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = void 0;
 var auto_1 = require("chart.js/auto");
 document.body.onload = function () {
     initializeBalance();
@@ -179,6 +179,38 @@ function updatePage(history) {
         });
     });
 }
+function toggleSelectButton() {
+    var selectButton = document.getElementById("selectButton");
+    var stockInput = document.getElementById("stockInput");
+    if (stockInput && selectButton) {
+        if (stockInput.value.length > 0) {
+            selectButton.classList.remove("hide");
+        }
+        else {
+            selectButton.classList.add("hide");
+        }
+    }
+}
+exports.toggleSelectButton = toggleSelectButton;
+function toggleStockList() {
+    var stockDropdown = document.getElementById("stockDropdown");
+    var algoInput = document.getElementById("algoInput");
+    var selectButton = document.getElementById("selectButton");
+    if (algoInput !== null && algoInput.value !== null && algoInput.value !== "Select") {
+        if (stockDropdown !== null) {
+            stockDropdown.classList.remove("hide");
+        }
+    }
+    else {
+        if (stockDropdown !== null) {
+            stockDropdown.classList.add("hide");
+        }
+        if (selectButton !== null) {
+            selectButton.classList.add("hide");
+        }
+    }
+}
+exports.toggleStockList = toggleStockList;
 function toggleCustom() {
     var customDiv = document.getElementById("customDiv");
     var algoInput = document.getElementById("algoInput");

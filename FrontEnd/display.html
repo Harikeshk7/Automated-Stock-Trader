@@ -10,14 +10,14 @@
     <div>
       <algoDropdown>
         <h4>Choose Algorithm</h4>
-        <select id="algoInput" onchange="myBundle.toggleCustom()">
+        <select id="algoInput" onchange="myBundle.toggleCustom(); myBundle.toggleStockList()">
           <option selected disabled>Select</option>
           <option value="macd">MACD</option>
           <option value="trendFollowing">Trend Following</option>
           <option value="custom" id="customOption">Custom...</option>
         </select>
       </algoDropdown>
-      <stockDropdown>
+      <stockDropdown id="stockDropdown" class="hide" multiple onchange="myBundle.toggleSelectButton()">
         <h4>Choose Stocks to Trade</h4>
         <select id="stockInput" multiple>
           <option value="AMZN">AMZN</option>
@@ -37,7 +37,7 @@
         <input type="file" id="customFileInput" accept=".py">
         <p style="font-size: 14px; color: #555;">File should be called 'customFile.py' and Main function should be called 'customAlgorithm':</p>
       </div>
-      <button class = "slide" id="selectButton" onclick="myBundle.runBot()">Select</button>
+      <button class="slide hide" id="selectButton" onclick="myBundle.runBot()">Select</button>
     </div>
     <h2><div id="balance"></div></h2>
     <div>

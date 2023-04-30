@@ -10,5 +10,5 @@ npx http-server &
 
 # Start the back-end server
 echo "STARTING BACK-END SERVER"
-python3 back_end.py
+python back_end.py
 
