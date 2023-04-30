@@ -531,7 +531,10 @@
         <input type="file" id="customFileInput" accept=".py">
         <p style="font-size: 14px; color: #555;">File should be called 'customFile.py' and Main function should be called 'customAlgorithm':</p>
       </div>
-      <button class="slide hide" id="selectButton" onclick="myBundle.runBot()">Select</button>
+      <runDiv>
+        <button class="slide hide" id="selectButton" onclick="myBundle.runBot()">Run</button>
+        <strong id="loadingText">Initializing...please wait</strong>
+      </runDiv>
     </div>
     <h2><div id="balance"></div></h2>
     <div>
@@ -555,7 +558,6 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <hiddenDiv id="completeLog">
-        <text>Complete!</text>
         <button id="logButton" onclick="myBundle.displayLog()">Display Log</button>
         <popup id="logPopup"></popup>
       </hiddenDiv>

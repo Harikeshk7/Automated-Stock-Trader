@@ -40,6 +40,19 @@ select {
     border-radius: 5px;
     background-color: #fff;
     color: #444;
+    width: 150px;
+}
+
+input {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #444;
+    width: 150px;
+    vertical-align: top;
 }
 
 option:hover {background-color: lightblue;}
@@ -70,4 +83,39 @@ popup
   
 .hide {
     display: none;
+}
+
+runDiv {
+    margin-top: 80px;
+    display: inline-block;
+}
+
+strong {
+    display: none;
+}
+
+button.slide {
+    outline: none;
+    height: 35px;
+    text-align: center;
+    width: 130px;
+    border-radius: 150px;
+    background: #fff;
+    border: 2px solid #000;
+    color: #444;
+    letter-spacing: 1px;
+    text-shadow: 0;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+button.slide:hover {
+    color: white;
+    background: #000;
+}
+
+button.slide:active {
+    letter-spacing: 2px;
 }

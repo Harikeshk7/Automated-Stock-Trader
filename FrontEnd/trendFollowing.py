@@ -135,7 +135,7 @@ def runAlgorithm(stockList, algorithm):
         for stock in stockList:
             file = open(f'test_copy/{stock}.csv')
             intraday_csv[stock] = pd.read_csv(file)
-        for i in range(35,100):
+        for i in range(35,10000):
             for j,intraday in intraday_csv.items():
                 if (j not in stock_shares):
                     numShares = 0

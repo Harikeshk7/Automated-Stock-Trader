@@ -41,7 +41,7 @@ function initializeBalance()
   let balance = 10000
   const app = document.getElementById("balance")!
   const p = document.createElement("p")
-  p.innerHTML = "Balance: $"+balance
+  p.innerHTML = "Total Value: $"+balance
   app.append(p)
 }
 
@@ -137,21 +137,27 @@ async function updatePage(history: Action[])
   const chart = Chart.getChart('balanceChart')
   const balanceArea = document.getElementById("balance")!
   let balance = 10000
+  let ownValue = 0
+  let currentValue = 0
+
   for (let i = 0; i < history.length; i++)
   {
     if (history[i].type == "Bought")
     {
       balance -= history[i].price * history[i].shares
-      await sleep(3000)
+      ownValue += history[i].price * history[i].shares
+      currentValue = history[i].price * history[i].shares
+      await sleep(500)
       updateTable(history[i])
     }
     if (history[i].type == "Sold")
     {
       balance += history[i].price * history[i].shares
-      chart!.data.datasets[0].data.push(balance)
+      ownValue -= currentValue
+      chart!.data.datasets[0].data.push(balance+ownValue)
       chart!.data.labels!.push(history[i].time)
-      await sleep(3000)
-      balanceArea.innerHTML = "Balance: $"+(balance).toFixed(2)
+      await sleep(500)
+      balanceArea.innerHTML = "Total Value: $"+(balance+ownValue).toFixed(2)
       updateTable(history[i])
       chart!.update()
     }
@@ -218,6 +224,8 @@ export function searchStocks(): void {
 
 
 export function runBot() {
+  const loadingText = document.getElementById("loadingText")!
+  loadingText.style.display = "inline-block"
   console.log('Typescript hit')
   const stockInput = document.getElementById("stockInput") as HTMLSelectElement
   const algoInput = document.getElementById("algoInput") as HTMLSelectElement  
@@ -265,8 +273,9 @@ export function runBot() {
   .then((response) => {return response.json()}, (reason) => { console.log(reason) })
   .then(json => {
       console.log('Displaying on webpage - directory path: ', json.path)
-
+      
       writeLog(json.JsonList.history)
+      loadingText!.style.display = "none"
       updatePage(json.JsonList.history)
 
       const completeLog = document.getElementById("completeLog")!

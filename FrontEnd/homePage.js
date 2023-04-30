@@ -61,7 +61,7 @@ function initializeBalance() {
     var balance = 10000;
     var app = document.getElementById("balance");
     var p = document.createElement("p");
-    p.innerHTML = "Balance: $" + balance;
+    p.innerHTML = "Total Value: $" + balance;
     app.append(p);
 }
 function writeLog(history) {
@@ -140,20 +140,24 @@ function updateTable(action) {
 }
 function updatePage(history) {
     return __awaiter(this, void 0, void 0, function () {
-        var chart, balanceArea, balance, i;
+        var chart, balanceArea, balance, ownValue, currentValue, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     chart = auto_1.Chart.getChart('balanceChart');
                     balanceArea = document.getElementById("balance");
                     balance = 10000;
+                    ownValue = 0;
+                    currentValue = 0;
                     i = 0;
                     _a.label = 1;
                 case 1:
                     if (!(i < history.length)) return [3 /*break*/, 6];
                     if (!(history[i].type == "Bought")) return [3 /*break*/, 3];
                     balance -= history[i].price * history[i].shares;
-                    return [4 /*yield*/, sleep(3000)];
+                    ownValue += history[i].price * history[i].shares;
+                    currentValue = history[i].price * history[i].shares;
+                    return [4 /*yield*/, sleep(500)];
                 case 2:
                     _a.sent();
                     updateTable(history[i]);
@@ -161,12 +165,13 @@ function updatePage(history) {
                 case 3:
                     if (!(history[i].type == "Sold")) return [3 /*break*/, 5];
                     balance += history[i].price * history[i].shares;
-                    chart.data.datasets[0].data.push(balance);
+                    ownValue -= currentValue;
+                    chart.data.datasets[0].data.push(balance + ownValue);
                     chart.data.labels.push(history[i].time);
-                    return [4 /*yield*/, sleep(3000)];
+                    return [4 /*yield*/, sleep(500)];
                 case 4:
                     _a.sent();
-                    balanceArea.innerHTML = "Balance: $" + (balance).toFixed(2);
+                    balanceArea.innerHTML = "Total Value: $" + (balance + ownValue).toFixed(2);
                     updateTable(history[i]);
                     chart.update();
                     _a.label = 5;
@@ -239,6 +244,8 @@ function searchStocks() {
 exports.searchStocks = searchStocks;
 function runBot() {
     var _a;
+    var loadingText = document.getElementById("loadingText");
+    loadingText.style.display = "inline-block";
     console.log('Typescript hit');
     var stockInput = document.getElementById("stockInput");
     var algoInput = document.getElementById("algoInput");
@@ -281,6 +288,7 @@ function runBot() {
         .then(function (json) {
         console.log('Displaying on webpage - directory path: ', json.path);
         writeLog(json.JsonList.history);
+        loadingText.style.display = "none";
         updatePage(json.JsonList.history);
         var completeLog = document.getElementById("completeLog");
         completeLog.style.display = "inline";
