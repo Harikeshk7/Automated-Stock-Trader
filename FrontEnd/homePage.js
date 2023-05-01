@@ -136,7 +136,11 @@ function updateTable(action) {
         valueCell.innerText = (action.shares * action.price).toFixed(2).toString();
     }
     if (action.type == "Sold") {
-        table.tBodies[0].deleteRow(-1);
+        for (var i = 0; i < table.tBodies[0].rows.length; i++) {
+            if (table.tBodies[0].rows[i].cells[0].innerText == action.stock) {
+                table.tBodies[0].deleteRow(i);
+            }
+        }
     }
 }
 var buttonVal = false;
