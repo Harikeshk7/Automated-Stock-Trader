@@ -6,7 +6,38 @@
   </head>
   <body>
     <script>var exports = {};</script>
-    <h1><center>Automated Stock Trading Bot</center></h1>
+    <ul>
+      <li><a onclick=location.reload()>Home</a></li>
+      <li><a id="aboButton" onclick="myBundle.showAbout()">About</a></li>
+      <li><a id="conButton" onclick="myBundle.showContact()">Contact</a></li>
+      <li><a id="disButton" onclick="myBundle.showDisclaimer()">Disclaimer</a></li>
+      <li><a id="setButton" onclick="myBundle.showSettings()">Settings</a></li>
+      <h1>Automated Stock Trading Bot</h1>
+    </ul>
+    <div id="aboModal" class="modal">
+      <div class="modalContent">
+        <span onclick="myBundle.closeAbout()" class="close">&times;</span>
+        <p>This is an automated trading bot and tool created as a senior design project by three students at Purdue University.</p>
+      </div>
+    </div>
+    <div id="conModal" class="modal">
+      <div class="modalContent">
+        <span onclick="myBundle.closeContact()" class="close">&times;</span>
+        <p>We can be contacted on our <a href="https://github.com/boilertradingbot/Automated-Stock-Trader">GitHub.</a></p>
+      </div>
+    </div>
+    <div id="disModal" class="modal">
+      <div class="modalContent">
+        <span onclick="myBundle.closeDisclaimer()" class="close">&times;</span>
+        <p>We are not financial professionals and we are not liable for any financial losses caused by our product.</p>
+      </div>
+    </div>
+    <div id="setModal" class="modal">
+      <div class="modalContent">
+        <span onclick="myBundle.closeSettings()" class="close">&times;</span>
+        <p>There are no settings to be changed at this time.</p>
+      </div>
+    </div>
     <div>
       <algoDropdown>
         <h4>Choose Algorithm</h4>

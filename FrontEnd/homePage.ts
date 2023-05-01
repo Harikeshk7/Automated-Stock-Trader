@@ -14,6 +14,54 @@ interface Action
   stock: string
 }
 
+export function showAbout()
+{
+  const disModal = document.getElementById("aboModal")!
+  disModal.style.display = "block"
+}
+
+export function closeAbout()
+{
+  const disModal = document.getElementById("aboModal")!
+  disModal.style.display = "none"
+}
+
+export function showContact()
+{
+  const disModal = document.getElementById("conModal")!
+  disModal.style.display = "block"
+}
+
+export function closeContact()
+{
+  const disModal = document.getElementById("conModal")!
+  disModal.style.display = "none"
+}
+
+export function showDisclaimer()
+{
+  const disModal = document.getElementById("disModal")!
+  disModal.style.display = "block"
+}
+
+export function closeDisclaimer()
+{
+  const disModal = document.getElementById("disModal")!
+  disModal.style.display = "none"
+}
+
+export function showSettings()
+{
+  const disModal = document.getElementById("setModal")!
+  disModal.style.display = "block"
+}
+
+export function closeSettings()
+{
+  const disModal = document.getElementById("setModal")!
+  disModal.style.display = "none"
+}
+
 function compareTime(a:Action, b:Action)
 {
   if (a.time < b.time)

@@ -36,12 +36,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.runBot = exports.stopFunction = exports.searchStocks = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = void 0;
+exports.runBot = exports.stopFunction = exports.searchStocks = exports.toggleCustom = exports.toggleStockList = exports.toggleSelectButton = exports.displayLog = exports.closeSettings = exports.showSettings = exports.closeDisclaimer = exports.showDisclaimer = exports.closeContact = exports.showContact = exports.closeAbout = exports.showAbout = void 0;
 var auto_1 = require("chart.js/auto");
 document.body.onload = function () {
     initializeBalance();
     initializeChart();
 };
+function showAbout() {
+    var disModal = document.getElementById("aboModal");
+    disModal.style.display = "block";
+}
+exports.showAbout = showAbout;
+function closeAbout() {
+    var disModal = document.getElementById("aboModal");
+    disModal.style.display = "none";
+}
+exports.closeAbout = closeAbout;
+function showContact() {
+    var disModal = document.getElementById("conModal");
+    disModal.style.display = "block";
+}
+exports.showContact = showContact;
+function closeContact() {
+    var disModal = document.getElementById("conModal");
+    disModal.style.display = "none";
+}
+exports.closeContact = closeContact;
+function showDisclaimer() {
+    var disModal = document.getElementById("disModal");
+    disModal.style.display = "block";
+}
+exports.showDisclaimer = showDisclaimer;
+function closeDisclaimer() {
+    var disModal = document.getElementById("disModal");
+    disModal.style.display = "none";
+}
+exports.closeDisclaimer = closeDisclaimer;
+function showSettings() {
+    var disModal = document.getElementById("setModal");
+    disModal.style.display = "block";
+}
+exports.showSettings = showSettings;
+function closeSettings() {
+    var disModal = document.getElementById("setModal");
+    disModal.style.display = "none";
+}
+exports.closeSettings = closeSettings;
 function compareTime(a, b) {
     if (a.time < b.time) {
         return -1;
