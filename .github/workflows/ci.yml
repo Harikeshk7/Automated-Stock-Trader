@@ -24,4 +24,5 @@ jobs:
     - name: Run script
       run: |
         cd FrontEnd
+        chmod +x run.sh
         ./run.sh
