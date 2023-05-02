@@ -25,7 +25,4 @@ jobs:
       run: |
         cd FrontEnd
         chmod +x run.sh
-        ./run.sh &
-    - name: Stop flask server
-      run: |
-        pkill -f 'python3 back_end.py'
+        
