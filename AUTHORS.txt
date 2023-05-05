@@ -1,0 +1,9 @@
+﻿Authors, ordered alphabetically
+------------
+
+- Eshaan Minocha (@Eshaan0112) <eshaanminocha0112@gmail.com>
+- Harikesh Kumar (@Harikesh7) <harikeshk72001@gmail.com>
+- Trevor Taka (@ttaka808) <trevorhktaka@gmail.com>
+
+
+Note: (@user) means a github user name.
